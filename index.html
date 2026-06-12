@@ -556,7 +556,7 @@ body{
   flex:1;display:flex;flex-direction:column;
   align-items:center;justify-content:center;
   gap:3px;text-decoration:none;
-  color:#bbb;font-size:.58rem;font-weight:700;
+  color:#bbb;font-size:.52rem;font-weight:700;
   cursor:pointer;transition:color .2s;
   padding:6px 0;
 }
@@ -623,6 +623,84 @@ footer{
 .fi2.vis{opacity:1;transform:translateY(0)}
 .fi3{opacity:0;transform:translateY(22px);transition:opacity .55s .24s ease,transform .55s .24s ease}
 .fi3.vis{opacity:1;transform:translateY(0)}
+
+/* ════ REVIEW SECTION ════ */
+.review-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;
+}
+.review-badge{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,111,15,.08);
+  border:1.5px solid rgba(255,111,15,.2);
+  border-radius:20px;padding:7px 14px;
+}
+.review-badge .daangn-logo{
+  font-size:.78rem;font-weight:800;
+  color:#ff6f0f;letter-spacing:-.3px;
+}
+.review-score{
+  font-family:'Noto Serif KR',serif;
+  font-size:1.6rem;font-weight:700;color:#ff6f0f;
+  line-height:1;
+}
+.review-score-sub{font-size:.7rem;color:var(--muted);margin-top:2px}
+.review-stars{color:#ff6f0f;font-size:.85rem;letter-spacing:1px}
+.rscroll{
+  display:flex;gap:12px;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;padding:2px 0 12px;
+  margin:0 -20px;padding-left:20px;
+}
+.rscroll::-webkit-scrollbar{display:none}
+.rcard{
+  flex-shrink:0;scroll-snap-align:start;
+  width:78vw;max-width:300px;
+  background:white;border-radius:16px;
+  padding:18px;
+  border:1px solid var(--border);
+  box-shadow:0 4px 16px rgba(0,0,0,.06);
+  display:flex;flex-direction:column;gap:10px;
+}
+.rcard-top{display:flex;align-items:center;gap:10px}
+.rcard-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,#ff8c42,#ff6f0f);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:white;font-weight:700;
+  flex-shrink:0;overflow:hidden;
+}
+.rcard-avatar img{width:100%;height:100%;object-fit:cover}
+.rcard-info{min-width:0}
+.rcard-nick{font-size:.83rem;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rcard-loc{font-size:.68rem;color:var(--muted);margin-top:1px}
+.rcard-stars{color:#ff6f0f;font-size:.8rem;letter-spacing:.5px}
+.rcard-txt{
+  font-size:.8rem;color:#3a3a3a;line-height:1.75;
+  display:-webkit-box;-webkit-line-clamp:5;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+.rcard-photo{
+  width:100%;border-radius:10px;
+  object-fit:cover;max-height:140px;
+  border:1px solid var(--border);
+}
+.rcard-date{font-size:.66rem;color:var(--muted);margin-top:auto}
+.review-more-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;margin-top:16px;padding:13px;
+  background:white;
+  border:1.5px solid rgba(255,111,15,.35);
+  border-radius:12px;
+  font-size:.84rem;font-weight:700;color:#ff6f0f;
+  text-decoration:none;transition:all .2s;
+}
+.review-more-btn:active{background:rgba(255,111,15,.06)}
+.review-count-bar{
+  display:flex;align-items:center;gap:6px;
+  font-size:.72rem;color:var(--muted);margin-bottom:16px;
+}
+.review-count-bar strong{color:var(--txt)}
 
 /* ════ CALENDAR ════ */
 #calBox{
@@ -968,6 +1046,93 @@ footer{
   </div>
 </section>
 
+<!-- REVIEW -->
+<section class="sec" id="review" style="background:#fff8f4">
+  <div class="sec-head fi">
+    <div class="slabel" style="color:#ff6f0f">Guest Reviews</div>
+    <div class="stitle" style="color:#1a1a1a">이용 후기</div>
+    <div class="sdiv" style="background:linear-gradient(90deg,#ff6f0f,#ffb347)"></div>
+  </div>
+
+  <div class="review-header fi2">
+    <div>
+      <div class="review-score">4.9</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-score-sub">13개 후기 평균</div>
+    </div>
+    <div class="review-badge">
+      <span class="daangn-logo">🥕 당근마켓</span>
+      <span style="font-size:.72rem;color:#888">인증 후기</span>
+    </div>
+  </div>
+
+  <div class="review-count-bar fi2">
+    <strong>13명</strong>의 게스트가 추천하는 햅삐양양 오션뷰
+  </div>
+
+  <div class="rscroll fi2">
+
+    <!-- 카드 1 -->
+    <div class="rcard">
+      <div class="rcard-top">
+        <div class="rcard-avatar">하</div>
+        <div class="rcard-info">
+          <div class="rcard-nick">하이다경기</div>
+          <div class="rcard-loc">경기 하남시 망월동</div>
+          <div class="rcard-stars">★★★★★ 5.0</div>
+        </div>
+      </div>
+      <div class="rcard-txt">속초, 강릉 질려서 이번엔 양양에서 1박 했는데 넘 좋았어용!!!!! 바다 바로 앞이라 테라스에서 바다멍때리기 좋았고 무엇보다 너무 깔끔해서 대만족했습니다ㅎㅎ 두번째 방문에는 5% 할인도 해주신다길래 곧 재방문 예정이에욧🤩</div>
+      <div class="rcard-date">2024년 여름 · 죽도해변</div>
+    </div>
+
+    <!-- 카드 2 -->
+    <div class="rcard">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:linear-gradient(135deg,#43c6ac,#1a6b8a)">쿨</div>
+        <div class="rcard-info">
+          <div class="rcard-nick">쿨거래지옥</div>
+          <div class="rcard-loc">서울시 강남구 삼성동</div>
+          <div class="rcard-stars">★★★★★ 5.0</div>
+        </div>
+      </div>
+      <div class="rcard-txt">오션뷰와 합리적인 가격 깔끔한 시설까지 죽도해변 오면 또 또 또 올게요 재방문 의사 200% 내돈내산 대만족</div>
+      <div class="rcard-date">2024년 · 죽도해변</div>
+    </div>
+
+    <!-- 카드 3 -->
+    <div class="rcard">
+      <div class="rcard-top">
+        <div class="rcard-avatar" style="background:linear-gradient(135deg,#9b59b6,#6c3483)">S</div>
+        <div class="rcard-info">
+          <div class="rcard-nick">Shaiwnj</div>
+          <div class="rcard-loc">경기 하남시 풍산동</div>
+          <div class="rcard-stars">★★★★★ 5.0</div>
+        </div>
+      </div>
+      <div class="rcard-txt">양양 여행은 처음이라 숙소 고민을 진짜 많이 했는데 여기로 고르길 백번 잘한것 같아요! 방에서 보는 오션뷰도 진짜 미쳤구.. 곳곳이 다 포토존이라 사진 찍기도 완전 좋았어요ㅎㅎ</div>
+      <div class="rcard-date">2024년 · 죽도해변</div>
+    </div>
+
+    <!-- 카드 4 (추가 여백 카드) -->
+    <div class="rcard" style="background:linear-gradient(135deg,#fff4ee,#fff);border:1.5px dashed rgba(255,111,15,.25);align-items:center;justify-content:center;min-height:160px;">
+      <div style="text-align:center;color:#ff6f0f">
+        <div style="font-size:2rem;margin-bottom:8px">🥕</div>
+        <div style="font-size:.82rem;font-weight:700;margin-bottom:4px">더 많은 후기 보기</div>
+        <div style="font-size:.72rem;color:#aaa">당근마켓에서 10개 후기 더</div>
+      </div>
+    </div>
+
+  </div>
+
+  <a href="https://www.daangn.com/kr/local-profile/ignq2joz4w5n/?referrer=share"
+     target="_blank" rel="noopener" class="review-more-btn fi3">
+    <span>🥕</span>
+    <span>당근마켓에서 전체 후기 보기</span>
+    <span style="font-size:.7rem;opacity:.6">13개 ›</span>
+  </a>
+</section>
+
 <!-- BOOKING -->
 <section class="sec ocean" id="booking">
   <div class="sec-head fi">
@@ -1130,6 +1295,9 @@ footer{
   </a>
   <a class="bn" href="#rules" data-sec="rules" onclick="navClick(this)">
     <div class="bn-ico">📋</div>안내
+  </a>
+  <a class="bn" href="#review" data-sec="review" onclick="navClick(this)">
+    <div class="bn-ico">🥕</div>후기
   </a>
 </nav>
 
