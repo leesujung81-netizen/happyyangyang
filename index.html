@@ -788,6 +788,83 @@ footer{
   text-align:center;font-size:.7rem;
   color:rgba(255,220,100,.7);margin-top:6px;min-height:16px;
 }
+
+/* ════ WEATHER ════ */
+.weather-main{
+  background:linear-gradient(135deg,#e8f4f8,#d0eaf5);
+  border-radius:22px;padding:22px 18px;margin-bottom:16px;
+}
+.weather-top{display:flex;align-items:center;justify-content:space-between}
+.weather-ico{font-size:3.8rem;line-height:1}
+.weather-right{text-align:right}
+.weather-temp{
+  font-family:'Noto Serif KR',serif;
+  font-size:2.8rem;font-weight:700;color:var(--oc);line-height:1;
+}
+.weather-desc{font-size:.86rem;color:var(--muted);margin-top:5px;font-weight:600}
+.weather-loc{font-size:.7rem;color:var(--muted);margin-top:3px}
+.weather-details{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;margin-top:14px;
+}
+.wd-item{
+  background:rgba(255,255,255,.72);border-radius:12px;
+  padding:10px 8px;text-align:center;
+}
+.wd-label{font-size:.63rem;color:var(--muted);font-weight:700;margin-bottom:3px}
+.wd-val{font-size:.88rem;font-weight:700;color:var(--oc)}
+.wf-label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-bottom:10px}
+.weather-forecast{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wf-card{
+  background:var(--sand);border:1px solid var(--border);
+  border-radius:14px;padding:12px 8px;text-align:center;
+}
+.wf-day{font-size:.68rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.wf-ico{font-size:1.55rem;margin:4px 0}
+.wf-max{font-size:.84rem;font-weight:700;color:var(--oc)}
+.wf-min{font-size:.74rem;color:var(--muted)}
+.weather-source{font-size:.63rem;color:var(--muted);text-align:right;margin-top:8px}
+.weather-loading{
+  text-align:center;padding:32px;
+  font-size:.85rem;color:var(--muted);
+}
+
+/* ════ NEARBY ════ */
+.nearby-tabs{display:flex;gap:8px;margin-bottom:18px}
+.ntab{
+  flex:1;padding:11px 8px;border-radius:12px;
+  font-size:.82rem;font-weight:700;text-align:center;
+  cursor:pointer;transition:all .2s;
+  border:1.5px solid var(--border);
+  background:white;color:var(--muted);
+}
+.ntab.on{background:var(--oc);color:white;border-color:var(--oc)}
+.nearby-panel{display:none}
+.nearby-panel.on{display:block}
+.ncard{
+  background:white;border:1px solid var(--border);
+  border-radius:16px;padding:16px;
+  margin-bottom:10px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.ncard-ico{
+  width:50px;height:50px;border-radius:14px;
+  background:linear-gradient(135deg,var(--oc),var(--oc2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.45rem;flex-shrink:0;
+}
+.ncard.food .ncard-ico{background:linear-gradient(135deg,#e07050,#f08060)}
+.ncard-body{min-width:0;flex:1}
+.ncard-name{font-size:.9rem;font-weight:700;color:var(--txt);margin-bottom:4px}
+.ncard-dist{
+  font-size:.68rem;font-weight:700;color:var(--oc);
+  background:rgba(26,107,138,.08);border:1px solid rgba(26,107,138,.15);
+  border-radius:6px;padding:2px 8px;display:inline-block;margin-bottom:6px;
+}
+.ncard.food .ncard-dist{
+  color:var(--cr);background:rgba(224,112,80,.08);border-color:rgba(224,112,80,.15);
+}
+.ncard-desc{font-size:.78rem;color:var(--muted);line-height:1.68}
 </style>
 </head>
 <body>
@@ -1232,6 +1309,25 @@ footer{
   </a>
 </section>
 
+<!-- WAVE -->
+<div class="wdiv" style="background:#fff8f4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 40" preserveAspectRatio="none"><path fill="#ffffff" d="M0,20 C130,40 260,0 390,20 L390,40 L0,40 Z"/></svg></div>
+
+<!-- WEATHER -->
+<section class="sec white" id="weather">
+  <div class="sec-head fi">
+    <div class="slabel">Weather</div>
+    <div class="stitle">양양 <em>현재 날씨</em></div>
+    <div class="sdiv"></div>
+    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">숙소 위치 기준 실시간 날씨 정보</p>
+  </div>
+  <div id="weatherWidget" class="fi2">
+    <div class="weather-loading">🌤️ 날씨 정보를 불러오는 중...</div>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wdiv"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 40" preserveAspectRatio="none"><path fill="#1a6b8a" d="M0,20 C130,0 260,40 390,20 L390,40 L0,40 Z"/></svg></div>
+
 <!-- BOOKING -->
 <section class="sec ocean" id="booking">
   <div class="sec-head fi">
@@ -1368,6 +1464,96 @@ footer{
       📞 전화로 문의하기
     </a>
     <p class="bnote">* 예약하기 → 카카오 접수 → 결제하기 순으로 진행하시면 예약이 확정됩니다</p>
+  </div>
+</section>
+
+<!-- WAVE -->
+<div class="wdiv" style="background:linear-gradient(145deg,#1a6b8a,#124d6a)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 40" preserveAspectRatio="none"><path fill="#f7f2eb" d="M0,20 C130,40 260,0 390,20 L390,40 L0,40 Z"/></svg></div>
+
+<!-- NEARBY -->
+<section class="sec sand" id="nearby">
+  <div class="sec-head fi">
+    <div class="slabel">Nearby</div>
+    <div class="stitle">주변 <em>관광지 &amp; 맛집</em></div>
+    <div class="sdiv"></div>
+    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">웨이블런트 양양 기준 가까운 명소</p>
+  </div>
+
+  <div class="nearby-tabs fi2">
+    <div class="ntab on" onclick="switchTab('attraction')">🏖 관광지</div>
+    <div class="ntab" onclick="switchTab('food')">🍽 맛집</div>
+  </div>
+
+  <!-- 관광지 -->
+  <div class="nearby-panel on" id="tab-attraction">
+    <div class="ncard fi2">
+      <div class="ncard-ico">🏖</div>
+      <div class="ncard-body">
+        <div class="ncard-name">죽도해변</div>
+        <span class="ncard-dist">차량 2분 · 도보 10분</span>
+        <div class="ncard-desc">숙소 바로 인근의 아담하고 조용한 해변. 맑고 투명한 파도와 한적한 분위기로 산책과 일출·일몰 사진 명소. 해수욕과 서핑도 가능.</div>
+      </div>
+    </div>
+    <div class="ncard fi2">
+      <div class="ncard-ico">🌊</div>
+      <div class="ncard-body">
+        <div class="ncard-name">인구해변</div>
+        <span class="ncard-dist">차량 5분 · 도보 15분</span>
+        <div class="ncard-desc">양양을 대표하는 서핑 명소. 에메랄드빛 파도와 넓은 백사장이 펼쳐지며 매년 여름 국내외 서퍼들이 몰려드는 핫스팟. 서핑 강습·장비 대여 가능.</div>
+      </div>
+    </div>
+    <div class="ncard fi2">
+      <div class="ncard-ico">⛩️</div>
+      <div class="ncard-body">
+        <div class="ncard-name">낙산사</div>
+        <span class="ncard-dist">차량 10분</span>
+        <div class="ncard-desc">671년 의상대사가 창건한 동해안 최고의 천년 고찰. 바다를 굽어보는 해수관음상과 의상대·홍련암의 절경이 유명. 양양 대표 일출 명소.</div>
+      </div>
+    </div>
+    <div class="ncard fi2">
+      <div class="ncard-ico">🏄</div>
+      <div class="ncard-body">
+        <div class="ncard-name">서피비치</div>
+        <span class="ncard-dist">차량 10분</span>
+        <div class="ncard-desc">국내 최고의 서핑 성지. 초보부터 프로까지 즐길 수 있는 서핑 강습과 장비 대여. 여름·가을 시즌 활기찬 비치 클럽과 워터스포츠 체험 가능.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 맛집 -->
+  <div class="nearby-panel" id="tab-food">
+    <div class="ncard food fi2">
+      <div class="ncard-ico">🐟</div>
+      <div class="ncard-body">
+        <div class="ncard-name">인구항 활어회 센터</div>
+        <span class="ncard-dist">차량 5분</span>
+        <div class="ncard-desc">갓 잡은 자연산 활어회와 조개구이. 인구항 수산물 직판장에서 시세로 신선한 해산물을 즐길 수 있음. 광어·우럭·문어·전복 등 다양.</div>
+      </div>
+    </div>
+    <div class="ncard food fi2">
+      <div class="ncard-ico">🍜</div>
+      <div class="ncard-body">
+        <div class="ncard-name">양양 메밀막국수 거리</div>
+        <span class="ncard-dist">차량 5분</span>
+        <div class="ncard-desc">강원도 전통 향토음식 메밀막국수와 감자전. 담백하고 고소한 메밀 면과 시원한 육수가 특징. 양양 시내에 메밀 전문점 다수 운영.</div>
+      </div>
+    </div>
+    <div class="ncard food fi2">
+      <div class="ncard-ico">☕</div>
+      <div class="ncard-body">
+        <div class="ncard-name">인구해변 오션뷰 카페거리</div>
+        <span class="ncard-dist">차량 5분</span>
+        <div class="ncard-desc">인구해변 주변에 형성된 감성 카페 거리. 파도 소리를 들으며 즐기는 커피 한 잔. 브런치·디저트·오션뷰 좌석을 갖춘 카페 다수.</div>
+      </div>
+    </div>
+    <div class="ncard food fi2">
+      <div class="ncard-ico">🍔</div>
+      <div class="ncard-body">
+        <div class="ncard-name">서피비치 버거바 &amp; 레스토랑</div>
+        <span class="ncard-dist">차량 10분</span>
+        <div class="ncard-desc">서핑 후 즐기는 수제버거와 브런치. 서피비치 주변으로 다양한 다이닝 옵션이 자리하며 여름철 바베큐·비치 파티 분위기도 즐길 수 있음.</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1785,6 +1971,84 @@ const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')});
 },{threshold:.12});
 document.querySelectorAll('.fi,.fi2,.fi3').forEach(el=>obs.observe(el));
+
+// ── 날씨 (Open-Meteo, 양양군 현남면 기준) ──────────────────────
+function getWCode(code){
+  const map=[
+    [[0],{ico:'☀️',label:'맑음'}],
+    [[1],{ico:'🌤️',label:'대체로 맑음'}],
+    [[2],{ico:'⛅',label:'구름 조금'}],
+    [[3],{ico:'☁️',label:'흐림'}],
+    [[45,48],{ico:'🌫️',label:'안개'}],
+    [[51,53,55],{ico:'🌦️',label:'이슬비'}],
+    [[61,63,65],{ico:'🌧️',label:'비'}],
+    [[71,73,75,77],{ico:'🌨️',label:'눈'}],
+    [[80,81,82],{ico:'🌦️',label:'소나기'}],
+    [[85,86],{ico:'🌨️',label:'눈 소나기'}],
+    [[95,96,99],{ico:'⛈️',label:'뇌우'}],
+  ];
+  for(const[codes,info]of map){if(codes.includes(code))return info;}
+  return{ico:'🌡️',label:'날씨 확인 중'};
+}
+
+async function loadWeather(){
+  const W=document.getElementById('weatherWidget');
+  try{
+    const url='https://api.open-meteo.com/v1/forecast?latitude=37.987&longitude=128.770&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Asia%2FSeoul&forecast_days=4';
+    const res=await fetch(url);
+    const data=await res.json();
+    const c=data.current,d=data.daily;
+    const wi=getWCode(c.weather_code);
+    const days=['일','월','화','수','목','금','토'];
+    const fcast=[1,2,3].map(i=>{
+      const dt=new Date(d.time[i]);
+      const wf=getWCode(d.weather_code[i]);
+      return`<div class="wf-card">
+        <div class="wf-day">${days[dt.getDay()]}요일</div>
+        <div class="wf-ico">${wf.ico}</div>
+        <div class="wf-max">${Math.round(d.temperature_2m_max[i])}°</div>
+        <div class="wf-min">${Math.round(d.temperature_2m_min[i])}°</div>
+      </div>`;
+    }).join('');
+    W.innerHTML=`
+      <div class="weather-main">
+        <div class="weather-top">
+          <div class="weather-ico">${wi.ico}</div>
+          <div class="weather-right">
+            <div class="weather-temp">${Math.round(c.temperature_2m)}°C</div>
+            <div class="weather-desc">${wi.label}</div>
+            <div class="weather-loc">📍 강원 양양군 현남면</div>
+          </div>
+        </div>
+        <div class="weather-details">
+          <div class="wd-item"><div class="wd-label">체감온도</div><div class="wd-val">${Math.round(c.apparent_temperature)}°C</div></div>
+          <div class="wd-item"><div class="wd-label">습도</div><div class="wd-val">${c.relative_humidity_2m}%</div></div>
+          <div class="wd-item"><div class="wd-label">풍속</div><div class="wd-val">${Math.round(c.wind_speed_10m)}m/s</div></div>
+        </div>
+      </div>
+      <div class="wf-label">3일 예보</div>
+      <div class="weather-forecast">${fcast}</div>
+      <div class="weather-source">데이터 제공: Open-Meteo · 무료 기상 API</div>
+    `;
+  }catch(e){
+    W.innerHTML='<div class="weather-loading">날씨 정보를 불러올 수 없습니다.</div>';
+  }
+}
+loadWeather();
+
+// ── 주변 관광지/맛집 탭 ───────────────────────────────────────
+function switchTab(tab){
+  document.querySelectorAll('.ntab').forEach((t,i)=>{
+    t.classList.toggle('on',(i===0&&tab==='attraction')||(i===1&&tab==='food'));
+  });
+  document.getElementById('tab-attraction').classList.toggle('on',tab==='attraction');
+  document.getElementById('tab-food').classList.toggle('on',tab==='food');
+  // fade-in 재처리
+  const panel=document.getElementById('tab-'+tab);
+  panel.querySelectorAll('.fi2').forEach(el=>{
+    if(!el.classList.contains('vis'))obs.observe(el);
+  });
+}
 </script>
 </body>
 </html>
