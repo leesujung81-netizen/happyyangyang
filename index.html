@@ -1354,7 +1354,7 @@ footer{
       <div class="cal-legend">
         <span class="leg-dot blocked"></span><span>예약중</span>
         <span class="leg-dot today-d"></span><span>오늘</span>
-        <span class="leg-dot pick"></span><span>선택됨 (6박7일)</span>
+        <span class="leg-dot pick"></span><span>체크인 선택</span>
       </div>
       <div id="calMsg"></div>
     </div>
@@ -1377,8 +1377,8 @@ footer{
       <input type="date" id="ciDate" onchange="calcPrice()">
     </div>
     <div class="brow">
-      <label>퇴실 희망일 <span style="opacity:.5;font-size:.7rem">(7일 자동 계산)</span></label>
-      <input type="date" id="coDate" readonly style="opacity:.7;cursor:default">
+      <label>퇴실 희망일</label>
+      <input type="date" id="coDate" onchange="calcPrice()">
     </div>
     <div class="pprev" id="pprev">
       <div class="pprev-amt" id="pprevAmt"></div>
@@ -1663,12 +1663,7 @@ function renderCal() {
     const blocked = !past && isBlocked(_calY, _calM, d);
     const isToday = dt.getTime() === today.getTime();
     const isPick = _picked === ds;
-    let inRange = false;
-    if (_picked) {
-      const pd = new Date(_picked), pe = new Date(_picked);
-      pe.setDate(pe.getDate()+7);
-      inRange = dt > pd && dt < pe;
-    }
+    const inRange = false;
     let cls = 'cday';
     if (past) cls += ' past';
     else if (blocked) cls += ' blocked';
@@ -1687,10 +1682,15 @@ function renderCal() {
 function pickCal(ds) {
   _picked = ds;
   document.getElementById('ciDate').value = ds;
+  // coDate 최소값을 ciDate+1로 설정, 기존값이 ciDate 이하면 초기화
+  const minCo = new Date(ds); minCo.setDate(minCo.getDate()+1);
+  const coEl = document.getElementById('coDate');
+  coEl.min = minCo.toISOString().split('T')[0];
+  if(coEl.value && coEl.value <= ds) coEl.value = '';
   calcPrice();
   renderCal();
   setTimeout(() => {
-    document.getElementById('bkName').scrollIntoView({behavior:'smooth', block:'center'});
+    coEl.scrollIntoView({behavior:'smooth', block:'center'});
   }, 200);
 }
 
@@ -1842,12 +1842,14 @@ function getRate(dateStr){
 }
 function calcPrice(){
   const ci=document.getElementById('ciDate').value;
-  if(!ci)return;
-  const d=new Date(ci);d.setDate(d.getDate()+7);
-  document.getElementById('coDate').value=d.toISOString().split('T')[0];
+  const co=document.getElementById('coDate').value;
+  if(!ci||!co)return;
+  const nights=Math.round((new Date(co)-new Date(ci))/86400000);
+  if(nights<=0)return;
   const{rate,label}=getRate(ci);
-  document.getElementById('pprevAmt').textContent=rate.toLocaleString()+'원';
-  document.getElementById('pprevLbl').textContent=label+' · 관리비 30,000원 별도 · 청소비 20,000원 별도';
+  const total=Math.round(rate/7*nights/10000)*10000;
+  document.getElementById('pprevAmt').textContent=total.toLocaleString()+'원';
+  document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · ${label} · 관리비·청소비 별도`;
   document.getElementById('pprev').classList.add('on');
 }
 function handleReserve(){
@@ -1856,24 +1858,28 @@ function handleReserve(){
   const name=document.getElementById('bkName').value.trim();
   const phone=document.getElementById('bkPhone').value.trim();
   if(!ci){alert('입주 희망일을 선택해 주세요.');return;}
+  if(!co){alert('퇴실 희망일을 선택해 주세요.');return;}
   if(!name){alert('이름을 입력해 주세요.');return;}
   if(!phone){alert('연락처를 입력해 주세요.');return;}
 
+  const nights=Math.round((new Date(co)-new Date(ci))/86400000);
   const guests=document.getElementById('bkGuests').value;
   const pet=document.getElementById('bkPet').value==='1'?'있음':'없음';
   const memo=document.getElementById('bkMemo').value.trim();
   const{rate}=getRate(ci);
-  const deposit=Math.round(rate*.3);
+  const total=Math.round(rate/7*nights/10000)*10000;
+  const deposit=Math.round(total*.3/10000)*10000;
 
   // 요약 카드 렌더링
   const rows=[
     {k:'📅 입주일',v:ci},
-    {k:'📅 퇴실일',v:co||'(자동계산 안됨)'},
+    {k:'📅 퇴실일',v:co},
+    {k:'🌙 숙박일수',v:`${nights}박 ${nights+1}일`},
     {k:'👤 이름',v:name},
     {k:'📱 연락처',v:phone},
     {k:'👥 인원',v:guests},
     {k:'🐾 반려동물',v:pet},
-    {k:'💰 숙박요금',v:rate.toLocaleString()+'원',hl:true},
+    {k:'💰 숙박요금',v:total.toLocaleString()+'원',hl:true},
     {k:'💳 예약금(30%)',v:deposit.toLocaleString()+'원',hl:true},
   ];
   if(memo) rows.push({k:'📝 문의',v:memo});
@@ -1936,9 +1942,12 @@ function handlePay(e){
   if(isOpen){modal.style.display='none';return;}
   const ci=document.getElementById('ciDate').value;
   const name=document.getElementById('bkName').value.trim();
-  if(ci){
+  const co2=document.getElementById('coDate').value;
+  if(ci&&co2){
+    const nights2=Math.round((new Date(co2)-new Date(ci))/86400000);
     const{rate}=getRate(ci);
-    const deposit=Math.round(rate*.3);
+    const total2=Math.round(rate/7*nights2/10000)*10000;
+    const deposit=Math.round(total2*.3/10000)*10000;
     document.getElementById('payAmt').textContent=deposit.toLocaleString()+'원';
     document.getElementById('payAmtBox').style.display='block';
   } else {
