@@ -60,6 +60,111 @@ body{
   transition:all .2s;
 }
 .topbar.s .tb-kakao{background:#FEE500;border-color:#FEE500;color:#3A1D1D}
+.tb-call{
+  display:flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,.18);
+  border:1.5px solid rgba(255,255,255,.38);
+  color:white;font-size:1.05rem;
+  text-decoration:none;margin-left:8px;
+  transition:all .2s;flex-shrink:0;
+}
+.topbar.s .tb-call{background:rgba(26,107,138,.1);border-color:rgba(26,107,138,.3);color:var(--oc)}
+.call-btn{
+  width:100%;padding:14px;
+  background:rgba(255,255,255,.15);
+  border:1.5px solid rgba(255,255,255,.35);
+  border-radius:12px;
+  font-size:.88rem;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  text-decoration:none;margin-top:10px;color:white;
+  transition:all .2s;
+}
+.call-btn:active{transform:scale(.98);background:rgba(255,255,255,.25)}
+/* ── 예약 단계 ── */
+.step-bar{
+  display:flex;align-items:center;
+  justify-content:center;margin-bottom:6px;
+}
+.sdot{
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(255,255,255,.18);
+  border:2px solid rgba(255,255,255,.25);
+  color:rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:800;flex-shrink:0;
+  transition:all .3s;
+}
+.sdot.on{background:var(--cr);border-color:var(--cr);color:white}
+.sdot.done{background:rgba(142,232,255,.3);border-color:#8ee8ff;color:#8ee8ff}
+.sline{flex:1;height:2px;background:rgba(255,255,255,.15);margin:0 6px;transition:background .3s}
+.sline.done{background:#8ee8ff}
+.slbls{
+  display:flex;justify-content:space-between;
+  font-size:.65rem;color:rgba(255,255,255,.45);
+  margin-bottom:18px;padding:0 2px;
+}
+.slbls span{text-align:center;width:28px}
+/* ── 예약하기 버튼 ── */
+.reserve-btn{
+  width:100%;padding:15px;
+  background:linear-gradient(135deg,#0e9a6e,#0db87f);
+  color:white;border:none;border-radius:12px;
+  font-size:.92rem;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:6px;transition:all .2s;
+}
+.reserve-btn:active{transform:scale(.98)}
+/* ── 예약 요약 카드 ── */
+.res-card{
+  margin-top:14px;
+  background:rgba(255,255,255,.1);
+  border:1.5px solid rgba(255,255,255,.25);
+  border-radius:16px;padding:18px;
+}
+.res-card-title{
+  font-size:.8rem;font-weight:800;color:rgba(255,255,255,.7);
+  letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:12px;display:flex;align-items:center;gap:6px;
+}
+.res-row{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  font-size:.84rem;
+}
+.res-row:last-child{border-bottom:none}
+.res-key{color:rgba(255,255,255,.55)}
+.res-val{color:white;font-weight:600;text-align:right;max-width:60%}
+.res-val.hl{color:#8ee8ff;font-family:'Noto Serif KR',serif;font-size:.92rem}
+.kakao-send-btn{
+  width:100%;padding:14px;
+  background:#FEE500;color:#3A1D1D;
+  border:none;border-radius:12px;
+  font-size:.9rem;font-weight:800;
+  cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:14px;transition:all .2s;
+}
+.kakao-send-btn:active{transform:scale(.98)}
+.paste-guide{
+  background:rgba(254,229,0,.1);
+  border:1px solid rgba(254,229,0,.3);
+  border-radius:10px;padding:12px 14px;
+  font-size:.78rem;color:rgba(255,255,255,.75);
+  line-height:1.7;margin-top:10px;
+  display:none;
+}
+.reserve-ok{
+  background:rgba(14,154,110,.2);
+  border:1px solid rgba(14,184,127,.4);
+  border-radius:10px;padding:12px;
+  text-align:center;font-size:.84rem;
+  color:#5effc8;font-weight:700;
+  margin-top:10px;display:none;
+}
 
 /* ════ HERO ════ */
 #hero{
@@ -518,6 +623,93 @@ footer{
 .fi2.vis{opacity:1;transform:translateY(0)}
 .fi3{opacity:0;transform:translateY(22px);transition:opacity .55s .24s ease,transform .55s .24s ease}
 .fi3.vis{opacity:1;transform:translateY(0)}
+
+/* ════ CALENDAR ════ */
+#calBox{
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.2);
+  border-radius:16px;padding:16px;
+  margin-bottom:20px;
+}
+.cal-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;
+}
+.cal-nav button{
+  background:rgba(255,255,255,.12);
+  border:1.5px solid rgba(255,255,255,.25);
+  color:white;border-radius:8px;
+  width:34px;height:34px;
+  font-size:1.15rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.cal-nav button:active{transform:scale(.88)}
+#calTitle{font-weight:700;font-size:.92rem;color:white}
+.cal-days{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  text-align:center;font-size:.62rem;
+  color:rgba(255,255,255,.4);font-weight:700;
+  letter-spacing:.5px;margin-bottom:5px;
+}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cday{
+  aspect-ratio:1;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:600;
+  color:rgba(255,255,255,.8);
+  cursor:pointer;transition:all .15s;
+  position:relative;
+}
+.cday:active{transform:scale(.85)}
+.cday.empty{cursor:default}
+.cday.past{color:rgba(255,255,255,.2);cursor:not-allowed}
+.cday.sun{color:rgba(255,170,150,.85)}
+.cday.sat{color:rgba(150,210,255,.85)}
+.cday.blocked{
+  background:rgba(220,60,50,.18);
+  border:1px solid rgba(220,60,50,.28);
+  color:rgba(255,140,120,.4);
+  cursor:not-allowed;
+}
+.cday.blocked::after{
+  content:'예약중';
+  position:absolute;bottom:1px;
+  font-size:.4rem;color:rgba(255,100,80,.45);
+  letter-spacing:-.2px;white-space:nowrap;
+}
+.cday.today{
+  background:rgba(255,255,255,.12);
+  border:1.5px solid rgba(255,255,255,.28);
+}
+.cday.avail:not(.past):not(.blocked):not(.picked):not(.inrange):hover{
+  background:rgba(255,255,255,.1);
+}
+.cday.picked{
+  background:var(--cr);border-color:var(--cr2);
+  color:white;
+  box-shadow:0 2px 8px rgba(224,112,80,.45);
+}
+.cday.inrange{
+  background:rgba(224,112,80,.15);
+  border-radius:0;color:rgba(255,255,255,.65);
+}
+.cal-legend{
+  display:flex;align-items:center;gap:10px;
+  justify-content:center;margin-top:10px;
+  font-size:.65rem;color:rgba(255,255,255,.4);
+}
+.leg-dot{
+  width:10px;height:10px;border-radius:3px;
+  display:inline-block;flex-shrink:0;
+}
+.leg-dot.blocked{background:rgba(220,60,50,.22);border:1px solid rgba(220,60,50,.32)}
+.leg-dot.today-d{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.28)}
+.leg-dot.pick{background:var(--cr)}
+#calMsg{
+  text-align:center;font-size:.7rem;
+  color:rgba(255,220,100,.7);margin-top:6px;min-height:16px;
+}
 </style>
 </head>
 <body>
@@ -525,9 +717,12 @@ footer{
 <!-- TOP BAR -->
 <div class="topbar t" id="topbar">
   <a class="tb-logo" href="#">햅삐<span>양양</span></a>
-  <a href="https://open.kakao.com/o/PLACEHOLDER" target="_blank" class="tb-kakao">
-    💬 카카오 문의
-  </a>
+  <div style="display:flex;align-items:center;gap:0">
+    <a href="https://open.kakao.com/o/sLfw9czi" target="_blank" class="tb-kakao">
+      💬 카카오 문의
+    </a>
+    <a href="tel:01088306248" class="tb-call">📞</a>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -782,6 +977,40 @@ footer{
     <p style="font-size:.84rem;color:rgba(255,255,255,.65);margin-top:-10px">입주 희망일과 연락처를 남겨주시면 빠르게 안내해 드립니다</p>
   </div>
   <div class="bcard fi2">
+    <!-- 예약 캘린더 -->
+    <div id="calBox">
+      <div style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">📅 예약 가능 일정 확인</div>
+      <div class="cal-nav">
+        <button onclick="calPrev()">‹</button>
+        <span id="calTitle"></span>
+        <button onclick="calNext()">›</button>
+      </div>
+      <div class="cal-days">
+        <span style="color:rgba(255,160,140,.8)">일</span>
+        <span>월</span><span>화</span><span>수</span><span>목</span><span>금</span>
+        <span style="color:rgba(140,200,255,.8)">토</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-legend">
+        <span class="leg-dot blocked"></span><span>예약중</span>
+        <span class="leg-dot today-d"></span><span>오늘</span>
+        <span class="leg-dot pick"></span><span>선택됨 (6박7일)</span>
+      </div>
+      <div id="calMsg"></div>
+    </div>
+    <!-- 단계 표시 -->
+    <div class="step-bar">
+      <div class="sdot on" id="sd1">1</div>
+      <div class="sline" id="sl1"></div>
+      <div class="sdot" id="sd2">2</div>
+      <div class="sline" id="sl2"></div>
+      <div class="sdot" id="sd3">3</div>
+    </div>
+    <div class="slbls">
+      <span style="width:50px;margin-left:-11px">정보 입력</span>
+      <span style="width:50px;margin-left:-11px">예약 접수</span>
+      <span style="width:50px;margin-right:-11px">결제 완료</span>
+    </div>
     <div class="bcard-title">📅 예약 정보 입력</div>
     <div class="brow">
       <label>입주 희망일</label>
@@ -820,13 +1049,61 @@ footer{
       <label>문의사항 (선택)</label>
       <textarea id="bkMemo" placeholder="특이사항, 반려동물 정보 등"></textarea>
     </div>
-    <a id="tossBtn" href="#" class="toss-btn" onclick="handleToss(event)">
-      💳 토스로 예약금 결제하기
-    </a>
-    <a href="https://open.kakao.com/o/PLACEHOLDER" target="_blank" class="kakao-btn">
+    <!-- ① 예약하기 -->
+    <button class="reserve-btn" id="reserveBtn" onclick="handleReserve()">
+      📋 예약하기
+    </button>
+    <!-- 예약 요약 카드 -->
+    <div class="res-card" id="resCard" style="display:none">
+      <div class="res-card-title">✅ 예약 내용 확인</div>
+      <div id="resRows"></div>
+      <button class="kakao-send-btn" id="kakaoSendBtn" onclick="sendReserveKakao()">
+        💬 카카오톡으로 예약 접수하기
+      </button>
+      <div class="paste-guide" id="pasteGuide">
+        📋 예약 정보가 <b>복사</b>되었습니다!<br>
+        카카오 채팅창이 열리면 <b>길게 눌러 붙여넣기</b> 후 전송해 주세요.<br>
+        전송 후 아래 <b>결제하기</b>를 눌러 예약을 완료해 주세요.
+      </div>
+      <div class="reserve-ok" id="reserveOk">✅ 예약 접수 완료! 아래에서 결제해 주세요.</div>
+    </div>
+    <!-- ② 결제하기 -->
+    <button class="toss-btn" id="payBtn" onclick="handlePay(event)" style="opacity:.45;pointer-events:none;margin-top:10px">
+      💰 결제하기
+    </button>
+    <!-- 계좌 안내 팝업 -->
+    <div id="payModal" style="display:none;margin-top:14px;background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.3);border-radius:16px;padding:20px 18px;">
+      <div style="font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase">계좌이체 안내</div>
+      <div style="background:rgba(255,255,255,.1);border-radius:12px;padding:16px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:.8rem;color:rgba(255,255,255,.55)">은행</span>
+          <span style="font-size:.92rem;font-weight:700;color:white">카카오뱅크</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:.8rem;color:rgba(255,255,255,.55)">계좌번호</span>
+          <span style="font-size:.95rem;font-weight:700;color:#8ee8ff;letter-spacing:.5px" id="acctNum">3333-15-2094979</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:.8rem;color:rgba(255,255,255,.55)">예금주</span>
+          <span style="font-size:.92rem;font-weight:700;color:white">이시연</span>
+        </div>
+      </div>
+      <div id="payAmtBox" style="display:none;background:rgba(142,232,255,.1);border:1px solid rgba(142,232,255,.25);border-radius:10px;padding:12px;text-align:center;margin-bottom:12px">
+        <div style="font-size:.75rem;color:rgba(255,255,255,.55);margin-bottom:4px">입금 금액 (예약금 30%)</div>
+        <div id="payAmt" style="font-family:'Noto Serif KR',serif;font-size:1.45rem;font-weight:700;color:#8ee8ff"></div>
+      </div>
+      <button onclick="copyAcct()" style="width:100%;padding:12px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);border-radius:10px;color:white;font-size:.86rem;font-weight:700;cursor:pointer;font-family:inherit">
+        📋 계좌번호 복사
+      </button>
+      <div id="copyMsg" style="display:none;text-align:center;font-size:.78rem;color:#8ee8ff;margin-top:8px">✅ 복사되었습니다!</div>
+    </div>
+    <a href="https://open.kakao.com/o/sLfw9czi" target="_blank" class="kakao-btn">
       💬 카카오톡으로 문의하기
     </a>
-    <p class="bnote">* 예약금 결제 후 카카오톡으로 확인 안내드립니다</p>
+    <a href="tel:01088306248" class="call-btn">
+      📞 전화로 문의하기
+    </a>
+    <p class="bnote">* 예약하기 → 카카오 접수 → 결제하기 순으로 진행하시면 예약이 확정됩니다</p>
   </div>
 </section>
 
@@ -868,6 +1145,94 @@ footer{
 </div>
 
 <script>
+// ── Google Apps Script URL (배포 후 여기에 입력) ──────────────
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+// ── 캘린더 상태 ───────────────────────────────────────────────
+let _ranges = [], _calY, _calM, _picked = null;
+
+function initCal() {
+  const now = new Date();
+  _calY = now.getFullYear();
+  _calM = now.getMonth();
+  renderCal();
+  if (!SCRIPT_URL.includes('YOUR_APPS')) {
+    fetch(SCRIPT_URL)
+      .then(r => r.json())
+      .then(data => {
+        _ranges = (data.confirmed || []).map(r => ({
+          in: new Date(r.in), out: new Date(r.out)
+        }));
+        renderCal();
+        const p = data.pending || 0;
+        if (p > 0) document.getElementById('calMsg').textContent = `📌 검토 중인 예약 ${p}건 (확정 후 캘린더에 표시됩니다)`;
+      })
+      .catch(() => {});
+  }
+}
+
+function isBlocked(y, m, d) {
+  const dt = new Date(y, m, d);
+  return _ranges.some(r => dt >= r.in && dt < r.out);
+}
+
+function renderCal() {
+  const MN=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  document.getElementById('calTitle').textContent = `${_calY}년 ${MN[_calM]}`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const firstDow = new Date(_calY, _calM, 1).getDay();
+  const dim = new Date(_calY, _calM+1, 0).getDate();
+  for (let i = 0; i < firstDow; i++) {
+    const e = document.createElement('div');
+    e.className = 'cday empty';
+    grid.appendChild(e);
+  }
+  for (let d = 1; d <= dim; d++) {
+    const el = document.createElement('div');
+    const ds = `${_calY}-${String(_calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dt = new Date(_calY, _calM, d);
+    const dow = dt.getDay();
+    const past = dt < today;
+    const blocked = !past && isBlocked(_calY, _calM, d);
+    const isToday = dt.getTime() === today.getTime();
+    const isPick = _picked === ds;
+    let inRange = false;
+    if (_picked) {
+      const pd = new Date(_picked), pe = new Date(_picked);
+      pe.setDate(pe.getDate()+7);
+      inRange = dt > pd && dt < pe;
+    }
+    let cls = 'cday';
+    if (past) cls += ' past';
+    else if (blocked) cls += ' blocked';
+    else if (isPick) cls += ' picked avail';
+    else if (inRange) cls += ' inrange avail';
+    else if (isToday) cls += ' today avail';
+    else cls += ' avail';
+    if (!blocked && !past) { if (dow===0) cls+=' sun'; else if (dow===6) cls+=' sat'; }
+    el.className = cls;
+    el.textContent = d;
+    if (!past && !blocked) el.onclick = () => pickCal(ds);
+    grid.appendChild(el);
+  }
+}
+
+function pickCal(ds) {
+  _picked = ds;
+  document.getElementById('ciDate').value = ds;
+  calcPrice();
+  renderCal();
+  setTimeout(() => {
+    document.getElementById('bkName').scrollIntoView({behavior:'smooth', block:'center'});
+  }, 200);
+}
+
+function calPrev() { _calM--; if(_calM<0){_calM=11;_calY--;} renderCal(); }
+function calNext() { _calM++; if(_calM>11){_calM=0;_calY++;} renderCal(); }
+
+// ─────────────────────────────────────────────────────────────
 const BASE='https://d1pviohoskiraj.cloudfront.net/room/';
 const IMGS=[
   'a5dd99b8-2977-4cd6-b33e-df177f259f04','1e2ecce9-5f44-4f97-9f42-be662ab32a3e',
@@ -1020,20 +1385,132 @@ function calcPrice(){
   document.getElementById('pprevLbl').textContent=label+' · 관리비 30,000원 별도 · 청소비 20,000원 별도';
   document.getElementById('pprev').classList.add('on');
 }
-const TOSS_ID='YOUR_TOSS_ID';
-function handleToss(e){
-  e.preventDefault();
+function handleReserve(){
   const ci=document.getElementById('ciDate').value;
+  const co=document.getElementById('coDate').value;
   const name=document.getElementById('bkName').value.trim();
   const phone=document.getElementById('bkPhone').value.trim();
   if(!ci){alert('입주 희망일을 선택해 주세요.');return;}
-  if(!name||!phone){alert('이름과 연락처를 입력해 주세요.');return;}
+  if(!name){alert('이름을 입력해 주세요.');return;}
+  if(!phone){alert('연락처를 입력해 주세요.');return;}
+
+  const guests=document.getElementById('bkGuests').value;
+  const pet=document.getElementById('bkPet').value==='1'?'있음':'없음';
+  const memo=document.getElementById('bkMemo').value.trim();
   const{rate}=getRate(ci);
   const deposit=Math.round(rate*.3);
-  const msg=encodeURIComponent(`햅삐양양 예약금_${name}_${ci}`);
-  window.open(`https://toss.me/${TOSS_ID}?amount=${deposit}&message=${msg}`,'_blank');
+
+  // 구글 시트로 예약 데이터 전송
+  if (!SCRIPT_URL.includes('YOUR_APPS')) {
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain'},
+      body: JSON.stringify({name, phone, checkIn:ci, checkOut:co||'',
+        guests, pet, memo, rate, deposit}),
+      mode: 'no-cors'
+    }).catch(()=>{});
+  }
+
+  // 요약 카드 렌더링
+  const rows=[
+    {k:'📅 입주일',v:ci},
+    {k:'📅 퇴실일',v:co||'(자동계산 안됨)'},
+    {k:'👤 이름',v:name},
+    {k:'📱 연락처',v:phone},
+    {k:'👥 인원',v:guests},
+    {k:'🐾 반려동물',v:pet},
+    {k:'💰 숙박요금',v:rate.toLocaleString()+'원',hl:true},
+    {k:'💳 예약금(30%)',v:deposit.toLocaleString()+'원',hl:true},
+  ];
+  if(memo) rows.push({k:'📝 문의',v:memo});
+
+  const box=document.getElementById('resRows');
+  box.innerHTML=rows.map(r=>
+    `<div class="res-row">
+      <span class="res-key">${r.k}</span>
+      <span class="res-val${r.hl?' hl':''}">${r.v}</span>
+    </div>`
+  ).join('');
+
+  // 클립보드용 텍스트
+  window._resTxt=
+    '[햅삐양양 예약 접수]\n\n'+
+    rows.map(r=>`${r.k}: ${r.v}`).join('\n');
+
+  document.getElementById('resCard').style.display='block';
+  document.getElementById('pasteGuide').style.display='none';
+  document.getElementById('reserveOk').style.display='none';
+  document.getElementById('resCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+
+  // 단계 2 활성화
+  document.getElementById('sd1').classList.remove('on');
+  document.getElementById('sd1').classList.add('done');
+  document.getElementById('sl1').classList.add('done');
+  document.getElementById('sd2').classList.add('on');
+}
+
+function sendReserveKakao(){
+  const txt=window._resTxt||'예약 정보 없음';
+  const open=()=>{
+    document.getElementById('pasteGuide').style.display='block';
+    document.getElementById('reserveOk').style.display='block';
+    document.getElementById('kakaoSendBtn').style.opacity='.6';
+    // 결제하기 활성화
+    const pb=document.getElementById('payBtn');
+    pb.style.opacity='1';pb.style.pointerEvents='auto';
+    // 단계 3 활성화
+    document.getElementById('sd2').classList.remove('on');
+    document.getElementById('sd2').classList.add('done');
+    document.getElementById('sl2').classList.add('done');
+    document.getElementById('sd3').classList.add('on');
+    setTimeout(()=>window.open('https://open.kakao.com/o/sLfw9czi','_blank'),300);
+  };
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(open).catch(open);
+  } else {
+    const el=document.createElement('textarea');
+    el.value=txt;document.body.appendChild(el);
+    el.select();document.execCommand('copy');
+    document.body.removeChild(el);open();
+  }
+}
+
+function handlePay(e){
+  e.preventDefault();
+  const modal=document.getElementById('payModal');
+  const isOpen=modal.style.display!=='none';
+  if(isOpen){modal.style.display='none';return;}
+  const ci=document.getElementById('ciDate').value;
+  const name=document.getElementById('bkName').value.trim();
+  if(ci){
+    const{rate}=getRate(ci);
+    const deposit=Math.round(rate*.3);
+    document.getElementById('payAmt').textContent=deposit.toLocaleString()+'원';
+    document.getElementById('payAmtBox').style.display='block';
+  } else {
+    document.getElementById('payAmtBox').style.display='none';
+  }
+  modal.style.display='block';
+  setTimeout(()=>modal.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+function copyAcct(){
+  const txt='3333-15-2094979';
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(()=>showCopy());
+  } else {
+    const el=document.createElement('textarea');
+    el.value=txt;document.body.appendChild(el);
+    el.select();document.execCommand('copy');
+    document.body.removeChild(el);showCopy();
+  }
+}
+function showCopy(){
+  const msg=document.getElementById('copyMsg');
+  msg.style.display='block';
+  setTimeout(()=>msg.style.display='none',2000);
 }
 document.getElementById('ciDate').min=new Date().toISOString().split('T')[0];
+initCal();
 
 // Scroll animations (IntersectionObserver)
 const obs=new IntersectionObserver(entries=>{
