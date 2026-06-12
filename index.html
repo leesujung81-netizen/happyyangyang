@@ -1145,8 +1145,8 @@ footer{
 </div>
 
 <script>
-// ── Google Apps Script URL (배포 후 여기에 입력) ──────────────
-const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+// ── 구글 시트 공개 ID (확정예약 시트를 읽어 캘린더에 표시) ───
+const SHEET_ID = '1vmeuL12tvVpx9ur71_8ny10k-gulidY6uRD9p4_xPyg';
 
 // ── 캘린더 상태 ───────────────────────────────────────────────
 let _ranges = [], _calY, _calM, _picked = null;
@@ -1156,19 +1156,31 @@ function initCal() {
   _calY = now.getFullYear();
   _calM = now.getMonth();
   renderCal();
-  if (!SCRIPT_URL.includes('YOUR_APPS')) {
-    fetch(SCRIPT_URL)
-      .then(r => r.json())
-      .then(data => {
-        _ranges = (data.confirmed || []).map(r => ({
-          in: new Date(r.in), out: new Date(r.out)
-        }));
-        renderCal();
-        const p = data.pending || 0;
-        if (p > 0) document.getElementById('calMsg').textContent = `📌 검토 중인 예약 ${p}건 (확정 후 캘린더에 표시됩니다)`;
-      })
-      .catch(() => {});
-  }
+  // 구글 시트 "확정예약" 탭에서 차단 날짜 읽기 (공개 시트)
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent('확정예약')}`;
+  fetch(url)
+    .then(r => r.text())
+    .then(txt => {
+      // gviz 응답 래퍼 제거
+      const json = JSON.parse(txt.replace(/^[^(]+\(/, '').replace(/\);\s*$/, ''));
+      if (json.status !== 'ok' || !json.table || !json.table.rows) return;
+      _ranges = json.table.rows
+        .filter(row => row.c && row.c[0] && row.c[1])
+        .map(row => {
+          const parse = cell => {
+            const v = cell.v;
+            if (typeof v === 'string' && v.startsWith('Date(')) {
+              const p = v.match(/Date\((\d+),(\d+),(\d+)\)/);
+              if (p) return new Date(+p[1], +p[2], +p[3]);
+            }
+            return new Date(v);
+          };
+          return { in: parse(row.c[0]), out: parse(row.c[1]) };
+        })
+        .filter(r => r.in && r.out && !isNaN(r.in) && !isNaN(r.out));
+      renderCal();
+    })
+    .catch(() => {});
 }
 
 function isBlocked(y, m, d) {
@@ -1399,17 +1411,6 @@ function handleReserve(){
   const memo=document.getElementById('bkMemo').value.trim();
   const{rate}=getRate(ci);
   const deposit=Math.round(rate*.3);
-
-  // 구글 시트로 예약 데이터 전송
-  if (!SCRIPT_URL.includes('YOUR_APPS')) {
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'text/plain'},
-      body: JSON.stringify({name, phone, checkIn:ci, checkOut:co||'',
-        guests, pet, memo, rate, deposit}),
-      mode: 'no-cors'
-    }).catch(()=>{});
-  }
 
   // 요약 카드 렌더링
   const rows=[
