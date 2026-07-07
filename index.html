@@ -537,6 +537,25 @@ body{
   transition:all .2s;
 }
 .kakao-btn:active{transform:scale(.98)}
+.naver-btn{
+  width:100%;padding:15px;
+  background:#03C75A;color:white;
+  border:none;border-radius:12px;
+  font-size:.92rem;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  text-decoration:none;margin-bottom:18px;
+  transition:all .2s;
+}
+.naver-btn:active{transform:scale(.98)}
+.or-div{
+  display:flex;align-items:center;gap:10px;
+  margin:0 0 18px;
+}
+.or-div::before,.or-div::after{
+  content:'';flex:1;height:1px;background:rgba(255,255,255,.15);
+}
+.or-div span{font-size:.7rem;color:rgba(255,255,255,.4);font-weight:700}
 .bnote{
   font-size:.7rem;color:rgba(255,255,255,.38);
   text-align:center;margin-top:10px;
@@ -1336,6 +1355,10 @@ footer{
     <div class="sdiv"></div>
     <p style="font-size:.84rem;color:rgba(255,255,255,.65);margin-top:-10px">입주 희망일과 연락처를 남겨주시면 빠르게 안내해 드립니다</p>
   </div>
+  <a href="https://map.naver.com/p/entry/place/2067236921?placePath=/ticket&entry=plt" target="_blank" rel="noopener" class="naver-btn fi2">
+    🟢 네이버로 빠른 예약하기
+  </a>
+  <div class="or-div fi2"><span>또는 아래에서 직접 예약 접수</span></div>
   <div class="bcard fi2">
     <!-- 예약 캘린더 -->
     <div id="calBox">
