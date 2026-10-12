@@ -966,32 +966,32 @@ footer{
     <div class="slabel">Pricing</div>
     <div class="stitle">시즌별 요금</div>
     <div class="sdiv"></div>
-    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">1박부터 예약 가능 · 숙박일수만큼 요금 자동 계산</p>
+    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">1박부터 예약 가능 · 일주일/한달 살기는 별도 문의</p>
   </div>
   <div class="pscroll fi2">
     <div class="pcard off">
-      <div class="pperiod">6월 전체</div>
-      <div class="pamount">90<span style="font-size:.9rem">만</span></div>
-      <div class="punit">/주 (6박 7일)</div>
-      <div class="pnote">6월 1일 ~ 30일</div>
+      <div class="pperiod">10월 평일</div>
+      <div class="pamount">8<span style="font-size:.9rem">만</span></div>
+      <div class="punit">/1박</div>
+      <div class="pnote">일 ~ 목요일 숙박</div>
     </div>
     <div class="pcard mid">
-      <div class="pperiod">7월 상순</div>
-      <div class="pamount">100<span style="font-size:.9rem">만</span></div>
-      <div class="punit">/주 (6박 7일)</div>
-      <div class="pnote">7월 1일 ~ 15일</div>
-    </div>
-    <div class="pcard peak">
-      <div class="pperiod">7월 중순 ~ 8월</div>
-      <div class="pamount">110<span style="font-size:.9rem">만</span></div>
-      <div class="punit">/주 (6박 7일)</div>
-      <div class="pnote">7.16 ~ 8.15</div>
+      <div class="pperiod">10월 주말</div>
+      <div class="pamount">9<span style="font-size:.9rem">만</span></div>
+      <div class="punit">/1박</div>
+      <div class="pnote">금 · 토요일 숙박</div>
     </div>
     <div class="pcard off">
-      <div class="pperiod">8월 중순~</div>
-      <div class="pamount">90<span style="font-size:.9rem">만</span></div>
-      <div class="punit">/주 (6박 7일)</div>
-      <div class="pnote">8월 16일 이후</div>
+      <div class="pperiod">일주일 살기</div>
+      <div class="pamount" style="font-size:1.25rem">별도 문의</div>
+      <div class="punit">7박 이상</div>
+      <div class="pnote">카카오톡 · 전화 문의</div>
+    </div>
+    <div class="pcard off">
+      <div class="pperiod">한달 살기</div>
+      <div class="pamount" style="font-size:1.25rem">별도 문의</div>
+      <div class="punit">30박 이상</div>
+      <div class="pnote">카카오톡 · 전화 문의</div>
     </div>
   </div>
   <div class="pinfo fi3">
@@ -1833,23 +1833,33 @@ function toggleAcc(hd){
 }
 
 // Pricing
-function getRate(dateStr){
-  const d=new Date(dateStr),m=d.getMonth()+1,day=d.getDate();
-  if(m<7) return{rate:900000,label:'6월 요금'};
-  if(m===7&&day<=15) return{rate:1000000,label:'7월 상순 요금'};
-  if((m===7&&day>15)||(m===8&&day<=15)) return{rate:1100000,label:'7~8월 성수기 요금'};
-  return{rate:900000,label:'비수기 요금'};
+// 1박 요금: 평일(일~목 숙박) 8만 / 주말(금·토 숙박) 9만, 7박 이상은 별도 문의
+const RATE_WEEKDAY=80000, RATE_WEEKEND=90000, LONG_STAY=7;
+function calcStay(ci,co){
+  const nights=Math.round((new Date(co)-new Date(ci))/86400000);
+  let total=0,wd=0,we=0;
+  const d=new Date(ci+'T00:00:00');
+  for(let i=0;i<nights;i++){
+    const dow=d.getDay();
+    if(dow===5||dow===6){total+=RATE_WEEKEND;we++;}else{total+=RATE_WEEKDAY;wd++;}
+    d.setDate(d.getDate()+1);
+  }
+  const inquiry=nights>=LONG_STAY;
+  return{nights,total,wd,we,inquiry,deposit:Math.round(total*.3/1000)*1000};
 }
 function calcPrice(){
   const ci=document.getElementById('ciDate').value;
   const co=document.getElementById('coDate').value;
   if(!ci||!co)return;
-  const nights=Math.round((new Date(co)-new Date(ci))/86400000);
+  const{nights,total,wd,we,inquiry}=calcStay(ci,co);
   if(nights<=0)return;
-  const{rate,label}=getRate(ci);
-  const total=Math.round(rate/7*nights/10000)*10000;
-  document.getElementById('pprevAmt').textContent=total.toLocaleString()+'원';
-  document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · ${label} · 관리비·청소비 별도`;
+  if(inquiry){
+    document.getElementById('pprevAmt').textContent='별도 문의';
+    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 일주일/한달 살기는 카카오톡·전화로 문의해 주세요`;
+  }else{
+    document.getElementById('pprevAmt').textContent=total.toLocaleString()+'원';
+    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 평일 ${wd}박 + 주말 ${we}박 · 관리비·청소비 별도`;
+  }
   document.getElementById('pprev').classList.add('on');
 }
 function handleReserve(){
@@ -1862,13 +1872,10 @@ function handleReserve(){
   if(!name){alert('이름을 입력해 주세요.');return;}
   if(!phone){alert('연락처를 입력해 주세요.');return;}
 
-  const nights=Math.round((new Date(co)-new Date(ci))/86400000);
+  const{nights,total,deposit,inquiry}=calcStay(ci,co);
   const guests=document.getElementById('bkGuests').value;
   const pet=document.getElementById('bkPet').value==='1'?'있음':'없음';
   const memo=document.getElementById('bkMemo').value.trim();
-  const{rate}=getRate(ci);
-  const total=Math.round(rate/7*nights/10000)*10000;
-  const deposit=Math.round(total*.3/10000)*10000;
 
   // 요약 카드 렌더링
   const rows=[
@@ -1879,8 +1886,8 @@ function handleReserve(){
     {k:'📱 연락처',v:phone},
     {k:'👥 인원',v:guests},
     {k:'🐾 반려동물',v:pet},
-    {k:'💰 숙박요금',v:total.toLocaleString()+'원',hl:true},
-    {k:'💳 예약금(30%)',v:deposit.toLocaleString()+'원',hl:true},
+    {k:'💰 숙박요금',v:inquiry?'별도 문의 (7박 이상)':total.toLocaleString()+'원',hl:true},
+    {k:'💳 예약금(30%)',v:inquiry?'요금 협의 후 안내':deposit.toLocaleString()+'원',hl:true},
   ];
   if(memo) rows.push({k:'📝 문의',v:memo});
 
@@ -1943,11 +1950,9 @@ function handlePay(e){
   const ci=document.getElementById('ciDate').value;
   const name=document.getElementById('bkName').value.trim();
   const co2=document.getElementById('coDate').value;
-  if(ci&&co2){
-    const nights2=Math.round((new Date(co2)-new Date(ci))/86400000);
-    const{rate}=getRate(ci);
-    const total2=Math.round(rate/7*nights2/10000)*10000;
-    const deposit=Math.round(total2*.3/10000)*10000;
+  const stay=ci&&co2?calcStay(ci,co2):null;
+  if(stay&&!stay.inquiry){
+    const{deposit}=stay;
     document.getElementById('payAmt').textContent=deposit.toLocaleString()+'원';
     document.getElementById('payAmtBox').style.display='block';
   } else {
