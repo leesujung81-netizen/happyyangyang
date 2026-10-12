@@ -537,25 +537,6 @@ body{
   transition:all .2s;
 }
 .kakao-btn:active{transform:scale(.98)}
-.naver-btn{
-  width:100%;padding:15px;
-  background:#03C75A;color:white;
-  border:none;border-radius:12px;
-  font-size:.92rem;font-weight:700;
-  cursor:pointer;font-family:inherit;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  text-decoration:none;margin-bottom:18px;
-  transition:all .2s;
-}
-.naver-btn:active{transform:scale(.98)}
-.or-div{
-  display:flex;align-items:center;gap:10px;
-  margin:0 0 18px;
-}
-.or-div::before,.or-div::after{
-  content:'';flex:1;height:1px;background:rgba(255,255,255,.15);
-}
-.or-div span{font-size:.7rem;color:rgba(255,255,255,.4);font-weight:700}
 .bnote{
   font-size:.7rem;color:rgba(255,255,255,.38);
   text-align:center;margin-top:10px;
@@ -985,7 +966,7 @@ footer{
     <div class="slabel">Pricing</div>
     <div class="stitle">시즌별 요금</div>
     <div class="sdiv"></div>
-    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">최소 6박 7일 단위 · 1박 단기는 별도 문의</p>
+    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">1박부터 예약 가능 · 숙박일수만큼 요금 자동 계산</p>
   </div>
   <div class="pscroll fi2">
     <div class="pcard off">
@@ -1119,10 +1100,10 @@ footer{
     <div class="ac-item">
       <div class="ac-hd" onclick="toggleAcc(this)">
         <div class="ac-ico">📋</div>
-        <div class="ac-title">최소 숙박 / 청소</div>
+        <div class="ac-title">숙박 단위 / 청소</div>
         <div class="ac-arrow">▼</div>
       </div>
-      <div class="ac-body"><div class="ac-inner">최소 6박 7일 단위 예약<br>정기 청소 미제공 · 퇴실 시 기본 정리 요청<br>청소비 2만원 (1회)</div></div>
+      <div class="ac-body"><div class="ac-inner">1박부터 예약 가능 (장기 숙박 환영)<br>정기 청소 미제공 · 퇴실 시 기본 정리 요청<br>청소비 2만원 (1회)</div></div>
     </div>
     <div class="ac-item">
       <div class="ac-hd" onclick="toggleAcc(this)">
@@ -1355,10 +1336,6 @@ footer{
     <div class="sdiv"></div>
     <p style="font-size:.84rem;color:rgba(255,255,255,.65);margin-top:-10px">입주 희망일과 연락처를 남겨주시면 빠르게 안내해 드립니다</p>
   </div>
-  <a href="https://map.naver.com/p/entry/place/2067236921?placePath=/ticket&entry=plt" target="_blank" rel="noopener" class="naver-btn fi2">
-    🟢 네이버로 빠른 예약하기
-  </a>
-  <div class="or-div fi2"><span>또는 아래에서 직접 예약 접수</span></div>
   <div class="bcard fi2">
     <!-- 예약 캘린더 -->
     <div id="calBox">
