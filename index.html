@@ -777,11 +777,24 @@ footer{
   cursor:not-allowed;
 }
 .cday.blocked::after{
-  content:'예약중';
+  content:'예약완료';
   position:absolute;bottom:1px;
   font-size:.4rem;color:rgba(255,100,80,.45);
   letter-spacing:-.2px;white-space:nowrap;
 }
+.cday.pending{
+  background:rgba(240,180,40,.16);
+  border:1px solid rgba(240,180,40,.3);
+  color:rgba(255,210,120,.45);
+  cursor:not-allowed;
+}
+.cday.pending::after{
+  content:'예약대기';
+  position:absolute;bottom:1px;
+  font-size:.4rem;color:rgba(255,200,90,.6);
+  letter-spacing:-.2px;white-space:nowrap;
+}
+.cday.dim{opacity:.35}
 .cday.today{
   background:rgba(255,255,255,.12);
   border:1.5px solid rgba(255,255,255,.28);
@@ -808,6 +821,7 @@ footer{
   display:inline-block;flex-shrink:0;
 }
 .leg-dot.blocked{background:rgba(220,60,50,.22);border:1px solid rgba(220,60,50,.32)}
+.leg-dot.pending{background:rgba(240,180,40,.22);border:1px solid rgba(240,180,40,.35)}
 .leg-dot.today-d{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.28)}
 .leg-dot.pick{background:var(--cr)}
 #calMsg{
@@ -1577,8 +1591,9 @@ footer{
       <div class="cal-grid" id="calGrid"></div>
       <div class="cal-legend">
         <span class="leg-dot blocked"></span><span>예약완료</span>
+        <span class="leg-dot pending"></span><span>예약대기</span>
         <span class="leg-dot today-d"></span><span>오늘</span>
-        <span class="leg-dot pick"></span><span>체크인 선택</span>
+        <span class="leg-dot pick"></span><span>선택</span>
       </div>
       <div id="calMsg"></div>
     </div>
@@ -1598,11 +1613,11 @@ footer{
     <div class="bcard-title">📅 예약 정보 입력</div>
     <div class="brow">
       <label>입주 희망일</label>
-      <input type="date" id="ciDate" onchange="calcPrice()">
+      <input type="date" id="ciDate" readonly onclick="goCal()" placeholder="달력에서 선택">
     </div>
     <div class="brow">
       <label>퇴실 희망일</label>
-      <input type="date" id="coDate" onchange="calcPrice()">
+      <input type="date" id="coDate" readonly onclick="goCal()" placeholder="달력에서 선택">
     </div>
     <div class="pprev" id="pprev">
       <div class="pprev-amt" id="pprevAmt"></div>
@@ -1830,7 +1845,7 @@ const BOOKING_API = 'https://script.google.com/macros/s/AKfycbwSjHs38-io_Rtq5jD_
 const SHEET_ID = '1vmeuL12tvVpx9ur71_8ny10k-gulidY6uRD9p4_xPyg';
 
 // ── 캘린더 상태 ───────────────────────────────────────────────
-let _ranges = [], _calY, _calM, _picked = null;
+let _ranges = [], _calY, _calM, _ci = null, _co = null;
 
 // "2026-10-12" / "10-12" / gviz Date(2026,9,12) → 로컬 자정 Date
 function toDay(v) {
@@ -1851,7 +1866,7 @@ function initCal() {
   _calM = now.getMonth();
   renderCal();
   const done = list => {
-    _ranges = list.map(r => ({ in: toDay(r.in), out: toDay(r.out) }))
+    _ranges = list.map(r => ({ in: toDay(r.in), out: toDay(r.out), st: r.st || '확정' }))
       .filter(r => r.in && r.out && r.out > r.in);
     renderCal();
   };
@@ -1875,9 +1890,25 @@ function initCal() {
     .catch(() => {});
 }
 
-function isBlocked(y, m, d) {
-  const dt = new Date(y, m, d);
-  return _ranges.some(r => dt >= r.in && dt < r.out);
+// 해당 날짜 밤이 예약돼 있으면 '확정' 또는 '대기', 비어 있으면 null
+function nightState(dt) {
+  let st = null;
+  for (const r of _ranges) {
+    if (dt >= r.in && dt < r.out) { if (r.st !== '대기') return '확정'; st = '대기'; }
+  }
+  return st;
+}
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const md = d => `${d.getMonth()+1}/${d.getDate()}`;
+
+// 입주일 이후 처음 예약된 밤 = 선택 가능한 마지막 퇴실일
+function maxCheckout(ci) {
+  const d = new Date(ci);
+  for (let i = 0; i < 400; i++) {
+    d.setDate(d.getDate() + 1);
+    if (nightState(d)) return new Date(d);
+  }
+  return null;
 }
 
 function renderCal() {
@@ -1888,6 +1919,7 @@ function renderCal() {
   const today = new Date(); today.setHours(0,0,0,0);
   const firstDow = new Date(_calY, _calM, 1).getDay();
   const dim = new Date(_calY, _calM+1, 0).getDate();
+  const maxCo = _ci && !_co ? maxCheckout(_ci) : null;
   for (let i = 0; i < firstDow; i++) {
     const e = document.createElement('div');
     e.className = 'cday empty';
@@ -1895,42 +1927,56 @@ function renderCal() {
   }
   for (let d = 1; d <= dim; d++) {
     const el = document.createElement('div');
-    const ds = `${_calY}-${String(_calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const dt = new Date(_calY, _calM, d);
     const dow = dt.getDay();
     const past = dt < today;
-    const blocked = !past && isBlocked(_calY, _calM, d);
-    const isToday = dt.getTime() === today.getTime();
-    const isPick = _picked === ds;
-    const inRange = false;
+    const st = past ? null : nightState(dt);
+    // 입주일을 고른 상태면, 다음 예약 시작일까지는 퇴실일로 선택 가능
+    const canCo = !past && _ci && !_co && dt > _ci && (!maxCo || dt <= maxCo);
+    const isCi = _ci && dt.getTime() === _ci.getTime();
+    const isCo = _co && dt.getTime() === _co.getTime();
+    const inRange = _ci && _co && dt > _ci && dt < _co;
     let cls = 'cday';
     if (past) cls += ' past';
-    else if (blocked) cls += ' blocked';
-    else if (isPick) cls += ' picked avail';
+    else if (isCi || isCo) cls += ' picked avail';
     else if (inRange) cls += ' inrange avail';
-    else if (isToday) cls += ' today avail';
+    else if (st && !canCo) cls += st === '대기' ? ' pending' : ' blocked';
+    else if (dt.getTime() === today.getTime()) cls += ' today avail';
     else cls += ' avail';
-    if (!blocked && !past) { if (dow===0) cls+=' sun'; else if (dow===6) cls+=' sat'; }
+    if (_ci && !_co && !past && !st && dt > _ci && maxCo && dt > maxCo) cls += ' dim';
+    if (!past && !(st && !canCo)) { if (dow===0) cls+=' sun'; else if (dow===6) cls+=' sat'; }
     el.className = cls;
     el.textContent = d;
-    if (!past && !blocked) el.onclick = () => pickCal(ds);
+    if (!past) {
+      if (canCo) el.onclick = () => setCheckout(dt);
+      else if (!st) el.onclick = () => setCheckin(dt);
+    }
     grid.appendChild(el);
   }
+  const msg = document.getElementById('calMsg');
+  if (!_ci) msg.textContent = '👆 달력에서 입주일을 선택해 주세요';
+  else if (!_co) msg.textContent = `입주 ${md(_ci)} · 이제 퇴실일을 선택해 주세요` + (maxCo ? ` (최대 ${md(maxCo)})` : '');
+  else msg.textContent = `✅ ${md(_ci)} ~ ${md(_co)} · ${Math.round((_co-_ci)/86400000)}박 선택됨 (다시 누르면 새로 선택)`;
 }
 
-function pickCal(ds) {
-  _picked = ds;
-  document.getElementById('ciDate').value = ds;
-  // coDate 최소값을 ciDate+1로 설정, 기존값이 ciDate 이하면 초기화
-  const minCo = new Date(ds); minCo.setDate(minCo.getDate()+1);
-  const coEl = document.getElementById('coDate');
-  coEl.min = minCo.toISOString().split('T')[0];
-  if(coEl.value && coEl.value <= ds) coEl.value = '';
+function setCheckin(dt) {
+  _ci = dt; _co = null;
+  document.getElementById('ciDate').value = ymd(dt);
+  document.getElementById('coDate').value = '';
+  document.getElementById('pprev').classList.remove('on');
+  renderCal();
+}
+
+function setCheckout(dt) {
+  _co = dt;
+  document.getElementById('coDate').value = ymd(dt);
   calcPrice();
   renderCal();
-  setTimeout(() => {
-    coEl.scrollIntoView({behavior:'smooth', block:'center'});
-  }, 200);
+  setTimeout(() => document.getElementById('pprev').scrollIntoView({behavior:'smooth', block:'center'}), 200);
+}
+
+function goCal() {
+  document.getElementById('calBox').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function calPrev() { _calM--; if(_calM<0){_calM=11;_calY--;} renderCal(); }
@@ -2113,7 +2159,7 @@ function handleReserve(){
   if(co<=ci){alert('퇴실일은 입주일 다음 날 이후로 선택해 주세요.');return;}
   const ciD=toDay(ci),coD=toDay(co);
   if(_ranges.some(r=>ciD<r.out&&r.in<coD)){
-    alert('선택하신 기간에 이미 확정된 예약이 있습니다.\n달력에서 예약 가능한 날짜를 확인해 주세요.');
+    alert('선택하신 기간에 이미 예약된 날짜가 있습니다.\n달력에서 예약 가능한 날짜를 다시 선택해 주세요.');
     return;
   }
 
