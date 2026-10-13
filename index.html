@@ -735,99 +735,97 @@ footer{
   border-radius:16px;padding:16px;
   margin-bottom:20px;
 }
+#calBox{
+  background:#fff;border-radius:18px;
+  padding:18px 12px 16px;margin-bottom:22px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  color:#1f2328;
+}
+.cal-head{
+  font-size:.8rem;font-weight:700;color:#57606a;
+  margin:0 4px 12px;
+}
 .cal-nav{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:10px;
+  margin:0 2px 14px;
 }
 .cal-nav button{
-  background:rgba(255,255,255,.12);
-  border:1.5px solid rgba(255,255,255,.25);
-  color:white;border-radius:8px;
-  width:34px;height:34px;
-  font-size:1.15rem;cursor:pointer;
+  background:#f2f4f6;border:none;
+  color:#1f2328;border-radius:50%;
+  width:36px;height:36px;
+  font-size:1.3rem;line-height:1;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  transition:all .2s;
+  transition:background .15s;
 }
-.cal-nav button:active{transform:scale(.88)}
-#calTitle{font-weight:700;font-size:.92rem;color:white}
+.cal-nav button:active{background:#e3e7eb}
+#calTitle{font-weight:800;font-size:1.08rem;color:#1f2328;letter-spacing:-.3px}
 .cal-days{
   display:grid;grid-template-columns:repeat(7,1fr);
-  text-align:center;font-size:.62rem;
-  color:rgba(255,255,255,.4);font-weight:700;
-  letter-spacing:.5px;margin-bottom:5px;
+  text-align:center;font-size:.78rem;
+  color:#8b929a;font-weight:600;
+  padding-bottom:8px;margin-bottom:6px;
+  border-bottom:1px solid #eef0f2;
 }
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-days span:first-child{color:#e5484d}
+.cal-days span:last-child{color:#2f6fde}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);row-gap:4px}
 .cday{
-  aspect-ratio:1;border-radius:7px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.72rem;font-weight:600;
-  color:rgba(255,255,255,.8);
-  cursor:pointer;transition:all .15s;
-  position:relative;
+  height:50px;border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:.98rem;font-weight:600;color:#1f2328;
+  cursor:pointer;transition:background .15s;
+  position:relative;line-height:1.1;
 }
-.cday:active{transform:scale(.85)}
+.cday[data-tag]::after{
+  content:attr(data-tag);
+  font-size:.6rem;font-weight:700;margin-top:3px;letter-spacing:-.3px;
+}
 .cday.empty{cursor:default}
-.cday.past{color:rgba(255,255,255,.2);cursor:not-allowed}
-.cday.sun{color:rgba(255,170,150,.85)}
-.cday.sat{color:rgba(150,210,255,.85)}
+.cday.sun{color:#e5484d}
+.cday.sat{color:#2f6fde}
+.cday.past{color:#c9ced4;cursor:default}
+.cday.avail:not(.picked):not(.inrange):active{background:#eef4f7}
+.cday.today{color:var(--oc)}
+.cday.today::after{color:var(--oc)}
 .cday.blocked{
-  background:rgba(220,60,50,.18);
-  border:1px solid rgba(220,60,50,.28);
-  color:rgba(255,140,120,.4);
-  cursor:not-allowed;
+  background:#f2f3f5;color:#b4bac1;
+  text-decoration:line-through;cursor:not-allowed;
 }
-.cday.blocked::after{
-  content:'예약완료';
-  position:absolute;bottom:1px;
-  font-size:.4rem;color:rgba(255,100,80,.45);
-  letter-spacing:-.2px;white-space:nowrap;
-}
+.cday.blocked::after{color:#e5484d;text-decoration:none}
 .cday.pending{
-  background:rgba(240,180,40,.16);
-  border:1px solid rgba(240,180,40,.3);
-  color:rgba(255,210,120,.45);
-  cursor:not-allowed;
+  background:#fff6df;color:#c9a54d;
+  text-decoration:line-through;cursor:not-allowed;
 }
-.cday.pending::after{
-  content:'예약대기';
-  position:absolute;bottom:1px;
-  font-size:.4rem;color:rgba(255,200,90,.6);
-  letter-spacing:-.2px;white-space:nowrap;
-}
+.cday.pending::after{color:#d08a00;text-decoration:none}
 .cday.dim{opacity:.35}
-.cday.today{
-  background:rgba(255,255,255,.12);
-  border:1.5px solid rgba(255,255,255,.28);
-}
-.cday.avail:not(.past):not(.blocked):not(.picked):not(.inrange):hover{
-  background:rgba(255,255,255,.1);
+.cday.inrange{
+  background:#e2f1f7;color:#124d6a;border-radius:0;
 }
 .cday.picked{
-  background:var(--cr);border-color:var(--cr2);
-  color:white;
-  box-shadow:0 2px 8px rgba(224,112,80,.45);
+  background:var(--oc);color:#fff;
+  box-shadow:0 3px 10px rgba(26,107,138,.35);
+  z-index:1;
 }
-.cday.inrange{
-  background:rgba(224,112,80,.15);
-  border-radius:0;color:rgba(255,255,255,.65);
-}
+.cday.picked::after{color:#fff}
 .cal-legend{
-  display:flex;align-items:center;gap:10px;
-  justify-content:center;margin-top:10px;
-  font-size:.65rem;color:rgba(255,255,255,.4);
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;
+  justify-content:center;margin-top:14px;
+  font-size:.74rem;color:#57606a;
 }
+.cal-legend span{display:inline-flex;align-items:center;gap:5px}
 .leg-dot{
-  width:10px;height:10px;border-radius:3px;
+  width:14px;height:14px;border-radius:4px;
   display:inline-block;flex-shrink:0;
 }
-.leg-dot.blocked{background:rgba(220,60,50,.22);border:1px solid rgba(220,60,50,.32)}
-.leg-dot.pending{background:rgba(240,180,40,.22);border:1px solid rgba(240,180,40,.35)}
-.leg-dot.today-d{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.28)}
-.leg-dot.pick{background:var(--cr)}
+.leg-dot.blocked{background:#f2f3f5;border:1px solid #dfe3e7}
+.leg-dot.pending{background:#fff6df;border:1px solid #f0dca8}
+.leg-dot.pick{background:var(--oc)}
 #calMsg{
-  text-align:center;font-size:.7rem;
-  color:rgba(255,220,100,.7);margin-top:6px;min-height:16px;
+  text-align:center;font-size:.84rem;font-weight:600;
+  color:#124d6a;background:#eef6f9;
+  border-radius:10px;padding:10px 12px;margin-top:12px;
 }
+#calMsg:empty{display:none}
 
 /* ════ WEATHER ════ */
 .weather-main{
@@ -1577,7 +1575,7 @@ footer{
   <div class="bcard fi2">
     <!-- 예약 캘린더 -->
     <div id="calBox">
-      <div style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">📅 예약 가능 일정 확인</div>
+      <div class="cal-head">📅 예약 가능한 날짜를 선택하세요</div>
       <div class="cal-nav">
         <button onclick="calPrev()">‹</button>
         <span id="calTitle"></span>
@@ -1590,10 +1588,9 @@ footer{
       </div>
       <div class="cal-grid" id="calGrid"></div>
       <div class="cal-legend">
-        <span class="leg-dot blocked"></span><span>예약완료</span>
-        <span class="leg-dot pending"></span><span>예약대기</span>
-        <span class="leg-dot today-d"></span><span>오늘</span>
-        <span class="leg-dot pick"></span><span>선택</span>
+        <span><i class="leg-dot pick"></i>선택한 날짜</span>
+        <span><i class="leg-dot blocked"></i>마감 (예약완료)</span>
+        <span><i class="leg-dot pending"></i>대기 (확정 전)</span>
       </div>
       <div id="calMsg"></div>
     </div>
@@ -1947,6 +1944,10 @@ function renderCal() {
     if (!past && !(st && !canCo)) { if (dow===0) cls+=' sun'; else if (dow===6) cls+=' sat'; }
     el.className = cls;
     el.textContent = d;
+    const tag = isCi ? '입실' : isCo ? '퇴실'
+      : (st && !canCo && !inRange) ? (st === '대기' ? '대기' : '마감')
+      : (!past && dt.getTime() === today.getTime()) ? '오늘' : '';
+    if (tag) el.dataset.tag = tag;
     if (!past) {
       if (canCo) el.onclick = () => setCheckout(dt);
       else if (!st) el.onclick = () => setCheckin(dt);
@@ -1956,7 +1957,7 @@ function renderCal() {
   const msg = document.getElementById('calMsg');
   if (!_ci) msg.textContent = '👆 달력에서 입주일을 선택해 주세요';
   else if (!_co) msg.textContent = `입주 ${md(_ci)} · 이제 퇴실일을 선택해 주세요` + (maxCo ? ` (최대 ${md(maxCo)})` : '');
-  else msg.textContent = `✅ ${md(_ci)} ~ ${md(_co)} · ${Math.round((_co-_ci)/86400000)}박 선택됨 (다시 누르면 새로 선택)`;
+  else msg.textContent = `✅ ${md(_ci)} 입실 ~ ${md(_co)} 퇴실 · ${Math.round((_co-_ci)/86400000)}박`;
 }
 
 function setCheckin(dt) {
