@@ -1009,13 +1009,13 @@ footer{
   <div class="pscroll fi2">
     <div class="pcard off">
       <div class="pperiod">10~11월 평일</div>
-      <div class="pamount">8<span style="font-size:.9rem">만</span></div>
+      <div class="pamount">9<span style="font-size:.9rem">만</span></div>
       <div class="punit">/1박</div>
       <div class="pnote">일 ~ 목요일 숙박</div>
     </div>
     <div class="pcard mid">
       <div class="pperiod">10~11월 주말</div>
-      <div class="pamount">9<span style="font-size:.9rem">만</span></div>
+      <div class="pamount">15<span style="font-size:.9rem">만</span></div>
       <div class="punit">/1박</div>
       <div class="pnote">금 · 토요일 숙박</div>
     </div>
@@ -2119,8 +2119,8 @@ function toggleAcc(hd){
 }
 
 // Pricing
-// 1박 요금: 평일(일~목 숙박) 8만 / 주말(금·토 숙박) 9만, 7박 이상은 별도 문의
-const RATE_WEEKDAY=80000, RATE_WEEKEND=90000, LONG_STAY=7;
+// 1박 요금: 평일(일~목 숙박) 9만 / 주말(금·토 숙박) 15만, 7박 이상은 별도 문의
+const RATE_WEEKDAY=90000, RATE_WEEKEND=150000, LONG_STAY=7;
 function calcStay(ci,co){
   const nights=Math.round((new Date(co)-new Date(ci))/86400000);
   let total=0,wd=0,we=0;
