@@ -783,6 +783,8 @@ footer{
 .cday.empty{cursor:default}
 .cday.sun{color:#e5484d}
 .cday.sat{color:#2f6fde}
+.cday.sun::after{color:#e5484d}
+.cday.special::after{color:#d08a00}
 .cday.past{color:#c9ced4;cursor:default}
 .cday.avail:not(.picked):not(.inrange):active{background:#eef4f7}
 .cday.today{color:var(--oc)}
@@ -1597,6 +1599,8 @@ footer{
         <span><i class="leg-dot pick"></i>선택한 날짜</span>
         <span><i class="leg-dot blocked"></i>마감 (예약완료)</span>
         <span><i class="leg-dot pending"></i>대기 (확정 전)</span>
+        <span><b style="color:#e5484d">빨간날</b> 공휴일</span>
+        <span><b style="color:#d08a00">별도문의</b> 12/31·1/1 숙박</span>
       </div>
       <div id="calMsg"></div>
     </div>
@@ -1903,6 +1907,17 @@ function nightState(dt) {
 }
 const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const md = d => `${d.getMonth()+1}/${d.getDate()}`;
+// 공휴일 (달력 빨간날) — 매년 다음 해 날짜 추가 필요
+const HOLIDAYS = {
+  '2026-10-03':'개천절','2026-10-05':'대체휴일','2026-10-09':'한글날','2026-12-25':'성탄절',
+  '2027-01-01':'신정','2027-02-05':'설연휴','2027-02-06':'설날','2027-02-07':'설연휴','2027-02-08':'대체휴일',
+  '2027-03-01':'삼일절','2027-05-05':'어린이날','2027-05-13':'석탄일','2027-06-06':'현충일',
+  '2027-08-15':'광복절','2027-08-16':'대체휴일','2027-09-14':'추석연휴','2027-09-15':'추석','2027-09-16':'추석연휴',
+  '2027-10-03':'개천절','2027-10-04':'대체휴일','2027-10-09':'한글날','2027-10-11':'대체휴일',
+  '2027-12-25':'성탄절','2027-12-27':'대체휴일',
+};
+// 연말연시 숙박(12/31, 1/1 밤)은 요금 별도 문의
+const isSpecialNight = d => ['12-31','01-01'].includes(ymd(d).slice(5));
 
 // 입주일 이후 처음 예약된 밤 = 선택 가능한 마지막 퇴실일
 function maxCheckout(ci) {
@@ -1947,12 +1962,17 @@ function renderCal() {
     else if (dt.getTime() === today.getTime()) cls += ' today avail';
     else cls += ' avail';
     if (_ci && !_co && !past && !st && dt > _ci && maxCo && dt > maxCo) cls += ' dim';
-    if (!past && !(st && !canCo)) { if (dow===0) cls+=' sun'; else if (dow===6) cls+=' sat'; }
+    const hol = HOLIDAYS[ymd(dt)];
+    const special = !past && isSpecialNight(dt);
+    if (!past && !(st && !canCo)) { if (dow===0 || hol) cls+=' sun'; else if (dow===6) cls+=' sat'; }
+    if (special && !(st && !canCo) && !isCi && !isCo) cls += ' special';
     el.className = cls;
     el.textContent = d;
     const tag = isCi ? '입실' : isCo ? '퇴실'
       : (st && !canCo && !inRange) ? (st === '대기' ? '대기' : '마감')
-      : (!past && dt.getTime() === today.getTime()) ? '오늘' : '';
+      : special ? '별도문의'
+      : (!past && dt.getTime() === today.getTime()) ? '오늘'
+      : (!past && hol) ? hol : '';
     if (tag) el.dataset.tag = tag;
     if (!past) {
       if (canCo) el.onclick = () => setCheckout(dt);
@@ -2129,25 +2149,27 @@ function toggleAcc(hd){
 const RATE_WEEKDAY=90000, RATE_WEEKEND=150000, LONG_STAY=7;
 function calcStay(ci,co){
   const nights=Math.round((new Date(co)-new Date(ci))/86400000);
-  let total=0,wd=0,we=0;
+  let total=0,wd=0,we=0,special=false;
   const d=new Date(ci+'T00:00:00');
   for(let i=0;i<nights;i++){
+    if(isSpecialNight(d))special=true;
     const dow=d.getDay();
     if(dow===5||dow===6){total+=RATE_WEEKEND;we++;}else{total+=RATE_WEEKDAY;wd++;}
     d.setDate(d.getDate()+1);
   }
-  const inquiry=nights>=LONG_STAY;
-  return{nights,total,wd,we,inquiry,deposit:Math.round(total*.3/1000)*1000};
+  const inquiry=nights>=LONG_STAY||special;
+  const reason=special?'연말연시':'7박 이상';
+  return{nights,total,wd,we,inquiry,reason,deposit:Math.round(total*.3/1000)*1000};
 }
 function calcPrice(){
   const ci=document.getElementById('ciDate').value;
   const co=document.getElementById('coDate').value;
   if(!ci||!co)return;
-  const{nights,total,wd,we,inquiry}=calcStay(ci,co);
+  const{nights,total,wd,we,inquiry,reason}=calcStay(ci,co);
   if(nights<=0)return;
   if(inquiry){
     document.getElementById('pprevAmt').textContent='별도 문의';
-    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 일주일/한달 살기는 카카오톡·전화로 문의해 주세요`;
+    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · `+(reason==='연말연시'?'연말연시(12/31·1/1) 숙박은':'일주일/한달 살기는')+' 카카오톡·전화로 문의해 주세요';
   }else{
     document.getElementById('pprevAmt').textContent=total.toLocaleString()+'원';
     document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 평일 ${wd}박 + 주말 ${we}박 · 관리비·청소비 별도 · 연휴·연말·해돋이 기간은 별도 문의`;
@@ -2170,7 +2192,7 @@ function handleReserve(){
     return;
   }
 
-  const{nights,total,deposit,inquiry}=calcStay(ci,co);
+  const{nights,total,deposit,inquiry,reason}=calcStay(ci,co);
   const guests=document.getElementById('bkGuests').value;
   const pet=document.getElementById('bkPet').value==='1'?'있음':'없음';
   const memo=document.getElementById('bkMemo').value.trim();
@@ -2184,7 +2206,7 @@ function handleReserve(){
     {k:'📱 연락처',v:phone},
     {k:'👥 인원',v:guests},
     {k:'🐾 반려동물',v:pet},
-    {k:'💰 숙박요금',v:inquiry?'별도 문의 (7박 이상)':total.toLocaleString()+'원',hl:true},
+    {k:'💰 숙박요금',v:inquiry?`별도 문의 (${reason})`:total.toLocaleString()+'원',hl:true},
     {k:'💳 예약금(30%)',v:inquiry?'요금 협의 후 안내':deposit.toLocaleString()+'원',hl:true},
   ];
   if(memo) rows.push({k:'📝 문의',v:memo});
