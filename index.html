@@ -1004,7 +1004,7 @@ footer{
     <div class="slabel">Pricing</div>
     <div class="stitle">시즌별 요금</div>
     <div class="sdiv"></div>
-    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">1박부터 예약 가능 · 일주일/한달 살기는 별도 문의</p>
+    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">1박부터 예약 가능 · 연휴·연말·해돋이 기간, 일주일/한달 살기는 별도 문의</p>
   </div>
   <div class="pscroll fi2">
     <div class="pcard off">
@@ -1018,6 +1018,12 @@ footer{
       <div class="pamount">15<span style="font-size:.9rem">만</span></div>
       <div class="punit">/1박</div>
       <div class="pnote">금 · 토요일 숙박</div>
+    </div>
+    <div class="pcard mid">
+      <div class="pperiod">연휴 · 연말 · 해돋이</div>
+      <div class="pamount" style="font-size:1.25rem">별도 문의</div>
+      <div class="punit">특별 기간</div>
+      <div class="pnote">카카오톡 · 전화 문의</div>
     </div>
     <div class="pcard off">
       <div class="pperiod">일주일 살기</div>
@@ -2144,7 +2150,7 @@ function calcPrice(){
     document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 일주일/한달 살기는 카카오톡·전화로 문의해 주세요`;
   }else{
     document.getElementById('pprevAmt').textContent=total.toLocaleString()+'원';
-    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 평일 ${wd}박 + 주말 ${we}박 · 관리비·청소비 별도`;
+    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 평일 ${wd}박 + 주말 ${we}박 · 관리비·청소비 별도 · 연휴·연말·해돋이 기간은 별도 문의`;
   }
   document.getElementById('pprev').classList.add('on');
 }
