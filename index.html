@@ -728,6 +728,91 @@ footer{
 .rpanel.naver .review-more-btn{border-color:rgba(3,199,90,.35)}
 .rpanel.naver .review-more-btn:active{background:rgba(3,199,90,.06)}
 
+/* ════ 손님 직접 후기 ════ */
+.rtab{font-size:.78rem}
+.rtab.site.on{background:var(--oc);border-color:var(--oc);color:white}
+.rpanel.site .review-badge{background:rgba(26,107,138,.08);border-color:rgba(26,107,138,.25)}
+.rpanel.site .review-badge .daangn-logo,
+.rpanel.site .review-score,
+.rpanel.site .review-stars,
+.rpanel.site .rcard-stars{color:var(--oc)}
+.rpanel.site .rcard-avatar{background:linear-gradient(135deg,var(--oc3),var(--oc))}
+.rcard-txt.full{-webkit-line-clamp:unset;display:block}
+.rcard.site-card .rcard-txt{cursor:pointer}
+.rph-wrap{position:relative;cursor:pointer}
+.rph-more{
+  position:absolute;right:8px;bottom:8px;
+  background:rgba(0,0,0,.6);color:#fff;font-size:.68rem;font-weight:700;
+  border-radius:10px;padding:3px 8px;
+}
+.rv-empty{
+  text-align:center;padding:30px 16px;background:white;border-radius:16px;
+  border:1.5px dashed var(--border);color:var(--muted);font-size:.84rem;line-height:1.7;
+}
+.rv-write-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;margin-top:14px;padding:14px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,var(--oc),var(--oc2));color:white;
+  font-size:.88rem;font-weight:800;cursor:pointer;font-family:inherit;
+  box-shadow:0 6px 18px rgba(26,107,138,.25);
+}
+.rv-write-btn small{font-weight:500;opacity:.8;font-size:.72rem}
+
+.rvm{
+  position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.5);
+  display:none;align-items:flex-end;justify-content:center;
+}
+.rvm.open{display:flex}
+.rvm-sheet{
+  background:white;width:100%;max-width:520px;max-height:92svh;overflow-y:auto;
+  border-radius:22px 22px 0 0;
+  padding:22px 18px calc(22px + env(safe-area-inset-bottom));
+  animation:rvUp .25s ease;
+}
+@keyframes rvUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.rvm-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.rvm-title{font-size:1.05rem;font-weight:800;color:var(--txt)}
+.rvm-x{width:34px;height:34px;border-radius:50%;border:none;background:#f1f3f5;font-size:1rem;cursor:pointer}
+.rvf-label{display:block;font-size:.76rem;font-weight:700;color:var(--txt);margin:14px 0 6px}
+.rvf-label span{color:var(--muted);font-weight:500}
+.rvf-input{
+  width:100%;box-sizing:border-box;padding:12px 13px;border:1.5px solid var(--border);
+  border-radius:11px;font-size:16px;font-family:inherit;color:var(--txt);background:#fafbfc;
+}
+.rvf-input:focus{outline:none;border-color:var(--oc3);background:white}
+textarea.rvf-input{min-height:120px;resize:vertical;line-height:1.6}
+.rvf-count{text-align:right;font-size:.66rem;color:var(--muted);margin-top:3px}
+.rvf-stars{display:flex;gap:6px}
+.rvf-stars button{
+  background:none;border:none;font-size:2rem;line-height:1;color:#d6dbe0;cursor:pointer;padding:0 2px;
+}
+.rvf-stars button.on{color:#ffb400}
+.rvf-photos{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.rvf-ph{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:#eef2f5}
+.rvf-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.rvf-ph button{
+  position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;
+  border:none;background:rgba(0,0,0,.6);color:#fff;font-size:.65rem;cursor:pointer;line-height:1;
+}
+.rvf-add{
+  aspect-ratio:1;border-radius:10px;border:1.5px dashed var(--oc3);color:var(--oc);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:.62rem;font-weight:700;cursor:pointer;background:rgba(82,184,216,.06);
+}
+.rvf-add b{font-size:1.3rem;line-height:1.1}
+.rvf-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.rvf-note{font-size:.7rem;color:var(--muted);line-height:1.6;margin-top:14px;background:#f6f8fa;border-radius:10px;padding:10px 12px}
+.rvf-submit{
+  width:100%;margin-top:14px;padding:15px;border:none;border-radius:12px;
+  background:var(--oc);color:white;font-size:.92rem;font-weight:800;cursor:pointer;font-family:inherit;
+}
+.rvf-submit:disabled{opacity:.55}
+.rvf-status{margin-top:10px;font-size:.78rem;text-align:center;color:var(--oc);min-height:1em}
+.rvf-status.err{color:#d9534f}
+.rvf-done{text-align:center;padding:30px 6px 10px}
+.rvf-done div:first-child{font-size:2.6rem}
+.rvf-done p{font-size:.86rem;color:var(--txt);line-height:1.75;margin:10px 0 0}
+
 /* ════ CALENDAR ════ */
 #calBox{
   background:rgba(255,255,255,.07);
@@ -1330,7 +1415,25 @@ footer{
 
   <div class="rtabs fi2">
     <div class="rtab naver on" onclick="switchReview('naver')">🟢 네이버 <b>11</b></div>
-    <div class="rtab daangn" onclick="switchReview('daangn')">🥕 당근마켓 <b>10</b></div>
+    <div class="rtab daangn" onclick="switchReview('daangn')">🥕 당근 <b>10</b></div>
+    <div class="rtab site" onclick="switchReview('site')">🌊 햅삐 <b id="siteRvCnt">0</b></div>
+  </div>
+
+  <!-- 손님이 이 페이지에서 직접 쓴 후기 (Apps Script ?action=reviews, 공개 체크된 것만) -->
+  <div class="rpanel site" id="rv-site">
+    <div class="review-header" id="siteRvHead" style="display:none">
+      <div>
+        <div class="review-score" id="siteRvAvg">-</div>
+        <div class="review-stars" id="siteRvStars">★★★★★</div>
+        <div class="review-score-sub" id="siteRvSub"></div>
+      </div>
+      <div class="review-badge">
+        <span class="daangn-logo">🌊 햅삐양양</span>
+        <span style="font-size:.72rem;color:#888">직접 남긴 후기</span>
+      </div>
+    </div>
+    <div class="rscroll" id="siteRvList"></div>
+    <div class="rv-empty" id="siteRvEmpty">아직 이곳에 남겨진 후기가 없어요.<br>머무르신 이야기를 <b>첫 번째로</b> 들려주세요 🌊</div>
   </div>
 
   <!-- 당근 리뷰 -->
@@ -1702,7 +1805,49 @@ footer{
     <span style="font-size:.7rem;opacity:.6">11개 ›</span>
   </a>
   </div>
+
+  <button type="button" class="rv-write-btn" onclick="openRvForm()">
+    ✍️ 후기 쓰기 <small>· 사진 최대 5장</small>
+  </button>
 </section>
+
+<!-- 후기 작성 시트 -->
+<div class="rvm" id="rvm" onclick="if(event.target===this)closeRvForm()">
+  <div class="rvm-sheet">
+    <div class="rvm-head">
+      <div class="rvm-title">✍️ 이용 후기 남기기</div>
+      <button type="button" class="rvm-x" onclick="closeRvForm()" aria-label="닫기">✕</button>
+    </div>
+    <div id="rvFormBody">
+      <label class="rvf-label">별점</label>
+      <div class="rvf-stars" id="rvStars"></div>
+
+      <label class="rvf-label" for="rvName">닉네임</label>
+      <input class="rvf-input" id="rvName" maxlength="20" placeholder="예) 바다좋아 (실명 대신 닉네임 OK)">
+
+      <label class="rvf-label" for="rvStay">숙박 시기 <span>(선택)</span></label>
+      <select class="rvf-input" id="rvStay"></select>
+
+      <label class="rvf-label" for="rvText">후기 내용</label>
+      <textarea class="rvf-input" id="rvText" maxlength="1000" placeholder="숙소 분위기, 오션뷰, 청결, 주변 맛집 등 자유롭게 남겨주세요 :)" oninput="document.getElementById('rvCount').textContent=this.value.length"></textarea>
+      <div class="rvf-count"><span id="rvCount">0</span> / 1000</div>
+
+      <label class="rvf-label">사진 <span>(선택, 최대 5장)</span></label>
+      <div class="rvf-photos" id="rvPhotos"></div>
+      <input type="file" id="rvFile" accept="image/*" multiple style="display:none" onchange="addRvPhotos(this)">
+      <input class="rvf-hp" id="rvHp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="rvf-note">📌 남겨주신 후기는 호스트 확인 후 페이지에 게시됩니다.<br>전화번호 등 개인정보는 적지 말아 주세요.</div>
+      <button type="button" class="rvf-submit" id="rvSubmit" onclick="submitReview()">후기 등록하기</button>
+      <div class="rvf-status" id="rvStatus"></div>
+    </div>
+    <div class="rvf-done" id="rvDone" style="display:none">
+      <div>🌊</div>
+      <p><b>소중한 후기 감사합니다!</b><br>호스트 확인 후 페이지에 게시됩니다.<br>또 놀러 오세요 :)</p>
+      <button type="button" class="rvf-submit" onclick="closeRvForm()">닫기</button>
+    </div>
+  </div>
+</div>
 
 <!-- WAVE -->
 <div class="wdiv" style="background:#fff8f4"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 40" preserveAspectRatio="none"><path fill="#ffffff" d="M0,20 C130,40 260,0 390,20 L390,40 L0,40 Z"/></svg></div>
@@ -2046,11 +2191,16 @@ const iurl=id=>`${BASE}${id}.jpg?b=samsamm2&d=720x480`;
 })();
 
 // Lightbox
-let lbIdx=0;
-function openLb(i){
-  lbIdx=i;
-  document.getElementById('lbImg').src=iurl(IMGS[i]);
-  document.getElementById('lbCnt').textContent=`${i+1} / ${IMGS.length}`;
+// list를 넘기면(후기 사진 URL 배열) 그 목록을, 없으면 갤러리(IMGS)를 보여줌
+let lbIdx=0, lbList=null;
+const lbLen=()=>lbList?lbList.length:IMGS.length;
+const lbSrc=i=>lbList?lbList[i]:iurl(IMGS[i]);
+function lbShow(){
+  document.getElementById('lbImg').src=lbSrc(lbIdx);
+  document.getElementById('lbCnt').textContent=`${lbIdx+1} / ${lbLen()}`;
+}
+function openLb(i,list){
+  lbList=list||null;lbIdx=i;lbShow();
   document.getElementById('lb').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -2059,9 +2209,7 @@ function closeLb(){
   document.body.style.overflow='';
 }
 function lbNav(d){
-  lbIdx=(lbIdx+d+IMGS.length)%IMGS.length;
-  document.getElementById('lbImg').src=iurl(IMGS[lbIdx]);
-  document.getElementById('lbCnt').textContent=`${lbIdx+1} / ${IMGS.length}`;
+  lbIdx=(lbIdx+d+lbLen())%lbLen();lbShow();
 }
 document.getElementById('lb').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLb()});
 document.addEventListener('keydown',e=>{
@@ -2416,6 +2564,171 @@ function switchReview(src){
   document.querySelectorAll('.rpanel').forEach(p=>p.classList.toggle('on',p.id==='rv-'+src));
   document.querySelectorAll('#rv-'+src+' .fi2,#rv-'+src+' .fi3').forEach(el=>el.classList.add('vis'));
 }
+
+// ── 손님 후기: 목록 불러오기 + 작성 ─────────────────────────────
+// 후기 저장소 = 예약과 같은 Apps Script(BOOKING_API). 사진은 구글 드라이브, 호스트가 "공개" 체크해야 표시
+const RV_MAX=5;
+const rvEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rvImg=(id,w)=>`https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w${w}`;
+let rvStarsVal=5, rvShots=[], rvBusy=false;
+
+function loadSiteReviews(){
+  if(!BOOKING_API)return;
+  fetch(BOOKING_API+'?action=reviews').then(r=>r.json()).then(j=>{
+    renderSiteReviews(Array.isArray(j.reviews)?j.reviews:[]);
+  }).catch(()=>{});
+}
+
+function renderSiteReviews(list){
+  document.getElementById('siteRvCnt').textContent=list.length;
+  const box=document.getElementById('siteRvList');
+  document.getElementById('siteRvEmpty').style.display=list.length?'none':'block';
+  document.getElementById('siteRvHead').style.display=list.length?'flex':'none';
+  box.style.display=list.length?'flex':'none';
+  if(!list.length)return;
+  const avg=list.reduce((s,r)=>s+r.stars,0)/list.length;
+  document.getElementById('siteRvAvg').textContent=avg.toFixed(1);
+  document.getElementById('siteRvStars').textContent='★'.repeat(Math.round(avg))+'☆'.repeat(5-Math.round(avg));
+  document.getElementById('siteRvSub').textContent=`${list.length}개 후기 평균`;
+  box.innerHTML='';
+  list.forEach(r=>{
+    const c=document.createElement('div');
+    c.className='rcard site-card';
+    const ph=r.photos||[];
+    c.innerHTML=`
+      <div class="rcard-top">
+        <div class="rcard-avatar">${rvEsc([...r.name][0]||'손')}</div>
+        <div class="rcard-info">
+          <div class="rcard-nick">${rvEsc(r.name)}</div>
+          <div class="rcard-loc">${r.stay?rvEsc(r.stay)+' 숙박':'햅삐양양 손님'}</div>
+          <div class="rcard-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)} ${r.stars.toFixed(1)}</div>
+        </div>
+      </div>
+      ${ph.length?`<div class="rph-wrap"><img class="rcard-photo" src="${rvImg(ph[0],600)}" alt="${rvEsc(r.name)}님 사진" loading="lazy">${ph.length>1?`<span class="rph-more">📷 ${ph.length}</span>`:''}</div>`:''}
+      <div class="rcard-txt">${rvEsc(r.text)}</div>
+      <div class="rcard-date">${rvEsc(r.date)} 작성</div>`;
+    const w=c.querySelector('.rph-wrap');
+    if(w)w.onclick=()=>openLb(0,ph.map(id=>rvImg(id,1600)));
+    const t=c.querySelector('.rcard-txt');
+    t.onclick=()=>t.classList.toggle('full');
+    box.appendChild(c);
+  });
+}
+
+function openRvForm(){
+  document.getElementById('rvFormBody').style.display='block';
+  document.getElementById('rvDone').style.display='none';
+  document.getElementById('rvm').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeRvForm(){
+  if(rvBusy)return;
+  document.getElementById('rvm').classList.remove('open');
+  document.body.style.overflow='';
+}
+function setRvStars(n){
+  rvStarsVal=n;
+  document.querySelectorAll('#rvStars button').forEach((b,i)=>b.classList.toggle('on',i<n));
+}
+function renderRvPhotos(){
+  const box=document.getElementById('rvPhotos');
+  box.innerHTML='';
+  rvShots.forEach((src,i)=>{
+    const d=document.createElement('div');
+    d.className='rvf-ph';
+    d.innerHTML=`<img src="${src}" alt="첨부 사진 ${i+1}"><button type="button" aria-label="사진 빼기">✕</button>`;
+    d.querySelector('button').onclick=()=>{rvShots.splice(i,1);renderRvPhotos();};
+    box.appendChild(d);
+  });
+  if(rvShots.length<RV_MAX){
+    const a=document.createElement('div');
+    a.className='rvf-add';
+    a.innerHTML=`<b>＋</b>${rvShots.length}/${RV_MAX}`;
+    a.onclick=()=>document.getElementById('rvFile').click();
+    box.appendChild(a);
+  }
+}
+// 휴대폰 원본(수 MB)을 긴 변 1280px JPEG로 줄여서 업로드 (빠르고 드라이브 용량 절약)
+function shrinkImg(file){
+  return new Promise((res,rej)=>{
+    const url=URL.createObjectURL(file), img=new Image();
+    img.onload=()=>{
+      const s=Math.min(1,1280/Math.max(img.naturalWidth,img.naturalHeight));
+      const c=document.createElement('canvas');
+      c.width=Math.round(img.naturalWidth*s);c.height=Math.round(img.naturalHeight*s);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      URL.revokeObjectURL(url);
+      res(c.toDataURL('image/jpeg',0.82));
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('decode'));};
+    img.src=url;
+  });
+}
+async function addRvPhotos(input){
+  const st=document.getElementById('rvStatus');
+  const files=[...input.files];input.value='';
+  let fail=0, over=0;
+  for(const f of files){
+    if(rvShots.length>=RV_MAX){over++;continue;}
+    try{rvShots.push(await shrinkImg(f));}catch(e){fail++;}
+    renderRvPhotos();
+  }
+  st.className='rvf-status'+(fail||over?' err':'');
+  st.textContent=fail?`⚠️ 사진 ${fail}장은 열 수 없는 형식이에요 (JPG·PNG로 올려주세요)`
+    :over?`사진은 최대 ${RV_MAX}장까지 올릴 수 있어요`:'';
+}
+function submitReview(){
+  const st=document.getElementById('rvStatus');
+  const name=document.getElementById('rvName').value.trim();
+  const text=document.getElementById('rvText').value.trim();
+  const err=m=>{st.className='rvf-status err';st.textContent=m;};
+  if(!name)return err('닉네임을 입력해 주세요');
+  if(text.length<5)return err('후기 내용을 5자 이상 적어 주세요');
+  if(!BOOKING_API)return err('지금은 후기 접수가 어려워요. 카카오톡으로 남겨 주세요');
+  const btn=document.getElementById('rvSubmit');
+  rvBusy=true;btn.disabled=true;
+  st.className='rvf-status';
+  st.textContent=rvShots.length?`⏳ 사진 ${rvShots.length}장과 함께 올리는 중… (최대 30초)`:'⏳ 등록하는 중…';
+  const data={type:'review',name,text,stars:rvStarsVal,
+    stay:document.getElementById('rvStay').value,
+    hp:document.getElementById('rvHp').value,
+    photos:rvShots.map(d=>({type:'image/jpeg',b64:d.split(',')[1]}))};
+  fetch(BOOKING_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
+    .then(r=>r.json())
+    .then(j=>{
+      rvBusy=false;btn.disabled=false;
+      if(!j.ok)throw new Error(j.error);
+      st.textContent='';
+      rvShots=[];renderRvPhotos();setRvStars(5);
+      document.getElementById('rvName').value='';
+      document.getElementById('rvText').value='';
+      document.getElementById('rvCount').textContent='0';
+      document.getElementById('rvFormBody').style.display='none';
+      document.getElementById('rvDone').style.display='block';
+    })
+    .catch(()=>{rvBusy=false;btn.disabled=false;err('⚠️ 등록에 실패했어요. 잠시 후 다시 시도해 주세요');});
+}
+(function initReviewForm(){
+  const sb=document.getElementById('rvStars');
+  for(let i=1;i<=5;i++){
+    const b=document.createElement('button');
+    b.type='button';b.textContent='★';b.setAttribute('aria-label',i+'점');
+    b.onclick=()=>setRvStars(i);
+    sb.appendChild(b);
+  }
+  setRvStars(5);
+  // 숙박 시기: 이번 달부터 지난 12개월
+  const sel=document.getElementById('rvStay'), now=new Date();
+  sel.innerHTML='<option value="">선택 안 함</option>';
+  for(let k=0;k<12;k++){
+    const d=new Date(now.getFullYear(),now.getMonth()-k,1);
+    const v=`${d.getFullYear()}년 ${d.getMonth()+1}월`;
+    sel.insertAdjacentHTML('beforeend',`<option value="${v}">${v}</option>`);
+  }
+  renderRvPhotos();
+  renderSiteReviews([]);
+  loadSiteReviews();
+})();
 
 // ── 주변 관광지/맛집 탭 ───────────────────────────────────────
 function switchTab(tab){
