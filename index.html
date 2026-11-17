@@ -854,6 +854,9 @@ textarea.rvf-input{min-height:120px;resize:vertical;line-height:1.6}
 .cal-days span:first-child{color:#e5484d}
 .cal-days span:last-child{color:#2f6fde}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);row-gap:4px}
+.cal-grid.xmas{
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 250'%3E %3Cg opacity='.15'%3E %3Cpath d='M100 22 L148 92 H122 L164 150 H134 L180 212 H20 L66 150 H36 L78 92 H52 Z' fill='%231f7a4d'/%3E %3Crect x='88' y='212' width='24' height='26' rx='3' fill='%237a4b2a'/%3E %3Cpath d='M70 118 Q100 132 132 112 M58 178 Q100 196 146 172' stroke='%23c9a227' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Ccircle cx='84' cy='104' r='6' fill='%23d23b3b'/%3E%3Ccircle cx='118' cy='128' r='6' fill='%23c9a227'/%3E %3Ccircle cx='72' cy='160' r='6' fill='%23c9a227'/%3E%3Ccircle cx='128' cy='168' r='6' fill='%23d23b3b'/%3E %3Ccircle cx='96' cy='192' r='6' fill='%23d23b3b'/%3E%3Ccircle cx='150' cy='198' r='6' fill='%23c9a227'/%3E %3Ccircle cx='52' cy='200' r='6' fill='%23d23b3b'/%3E%3Ccircle cx='104' cy='76' r='5' fill='%23d23b3b'/%3E %3C/g%3E %3Cpath opacity='.25' d='M100 4 L105.3 15.6 118 16.9 108.5 25.4 111.2 38 100 31.6 88.8 38 91.5 25.4 82 16.9 94.7 15.6 Z' fill='%23e0b23a'/%3E %3Cg fill='%238fb8cc' opacity='.35'%3E %3Ccircle cx='22' cy='30' r='3'/%3E%3Ccircle cx='176' cy='46' r='2.5'/%3E%3Ccircle cx='34' cy='96' r='2'/%3E %3Ccircle cx='184' cy='120' r='3'/%3E%3Ccircle cx='14' cy='160' r='2.5'/%3E%3Ccircle cx='160' cy='14' r='2'/%3E %3Ccircle cx='190' cy='176' r='2'/%3E%3Ccircle cx='44' cy='58' r='1.8'/%3E %3C/g%3E%3C/svg%3E") center 46%/auto 96% no-repeat;
+}
 .cday{
   height:50px;border-radius:12px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -2084,9 +2087,10 @@ function maxCheckout(ci) {
 
 function renderCal() {
   const MN=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-  document.getElementById('calTitle').textContent = `${_calY}년 ${MN[_calM]}`;
+  document.getElementById('calTitle').textContent = `${_calY}년 ${MN[_calM]}` + (_calM === 11 ? ' 🎄' : '');
   const grid = document.getElementById('calGrid');
   grid.innerHTML = '';
+  grid.classList.toggle('xmas', _calM === 11); // 12월: 트리 워터마크
   const today = new Date(); today.setHours(0,0,0,0);
   const firstDow = new Date(_calY, _calM, 1).getDay();
   const dim = new Date(_calY, _calM+1, 0).getDate();
