@@ -1091,7 +1091,7 @@ textarea.rvf-input{min-height:120px;resize:vertical;line-height:1.6}
     <div class="slabel">Pricing</div>
     <div class="stitle">시즌별 요금</div>
     <div class="sdiv"></div>
-    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">1박부터 예약 가능 · 2인 기준 (최대 4인) · 연휴·연말·해돋이 기간, 일주일/한달 살기는 별도 문의</p>
+    <p style="font-size:.82rem;color:var(--muted);margin-top:-10px">1박부터 예약 가능 · 2인 기준 (최대 4인) · 크리스마스·해맞이·연휴 기간, 일주일/한달 살기는 별도 문의</p>
   </div>
   <div class="pscroll fi2">
     <div class="pcard off">
@@ -1107,10 +1107,10 @@ textarea.rvf-input{min-height:120px;resize:vertical;line-height:1.6}
       <div class="pnote">금 · 토요일 숙박</div>
     </div>
     <div class="pcard mid">
-      <div class="pperiod">연휴 · 연말 · 해돋이</div>
+      <div class="pperiod">크리스마스 · 해맞이</div>
       <div class="pamount" style="font-size:1.25rem">별도 문의</div>
-      <div class="punit">특별 기간</div>
-      <div class="pnote">카카오톡 · 전화 문의</div>
+      <div class="punit">12/24·25 · 12/31·1/1 숙박</div>
+      <div class="pnote">상담 후 예약 · 카카오톡 · 전화</div>
     </div>
     <div class="pcard off">
       <div class="pperiod">일주일 살기</div>
@@ -1166,7 +1166,7 @@ textarea.rvf-input{min-height:120px;resize:vertical;line-height:1.6}
         <span><i class="leg-dot blocked"></i>마감 (예약완료)</span>
         <span><i class="leg-dot pending"></i>대기 (확정 전)</span>
         <span><b style="color:#e5484d">빨간날</b> 공휴일</span>
-        <span><b style="color:#d08a00">별도문의</b> 12/31·1/1 숙박</span>
+        <span><b style="color:#d08a00">별도문의</b> 크리스마스(12/24·25)·해맞이(12/31·1/1) 숙박</span>
       </div>
       <div id="calMsg"></div>
     </div>
@@ -2067,8 +2067,10 @@ const HOLIDAYS = {
   '2027-10-03':'개천절','2027-10-04':'대체휴일','2027-10-09':'한글날','2027-10-11':'대체휴일',
   '2027-12-25':'성탄절','2027-12-27':'대체휴일',
 };
-// 연말연시 숙박(12/31, 1/1 밤)은 요금 별도 문의
-const isSpecialNight = d => ['12-31','01-01'].includes(ymd(d).slice(5));
+// 크리스마스(12/24·25 밤)·해맞이(12/31·1/1 밤) 숙박은 상담 후 예약(요금 별도 문의)
+const SPECIAL_NIGHTS = {'12-24':'크리스마스','12-25':'크리스마스','12-31':'해맞이','01-01':'해맞이'};
+const specialName = d => SPECIAL_NIGHTS[ymd(d).slice(5)] || '';
+const isSpecialNight = d => !!specialName(d);
 
 // 입주일 이후 처음 예약된 밤 = 선택 가능한 마지막 퇴실일
 function maxCheckout(ci) {
@@ -2315,16 +2317,16 @@ function calcExtra(){
 }
 function calcStay(ci,co){
   const nights=Math.round((new Date(co)-new Date(ci))/86400000);
-  let total=0,wd=0,we=0,special=false;
+  let total=0,wd=0,we=0,special=false,spNames=[];
   const d=new Date(ci+'T00:00:00');
   for(let i=0;i<nights;i++){
-    if(isSpecialNight(d))special=true;
+    if(isSpecialNight(d)){special=true;const n=specialName(d);if(!spNames.includes(n))spNames.push(n);}
     const dow=d.getDay();
     if(dow===5||dow===6){total+=RATE_WEEKEND;we++;}else{total+=RATE_WEEKDAY;wd++;}
     d.setDate(d.getDate()+1);
   }
   const inquiry=nights>=LONG_STAY||special;
-  const reason=special?'연말연시':'7박 이상';
+  const reason=special?spNames.join('·'):'7박 이상';
   const{extra,detail}=calcExtra();
   return{nights,room:total,extra,detail,total:total+extra,wd,we,inquiry,reason};
 }
@@ -2336,10 +2338,10 @@ function calcPrice(){
   if(nights<=0)return;
   if(inquiry){
     document.getElementById('pprevAmt').textContent='별도 문의';
-    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · `+(reason==='연말연시'?'연말연시(12/31·1/1) 숙박은':'일주일/한달 살기는')+' 카카오톡·전화로 문의해 주세요';
+    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · `+(reason!=='7박 이상'?`${reason} 기간(12/24·25, 12/31·1/1) 숙박은 상담 후 예약이라`:'일주일/한달 살기는')+' 카카오톡·전화로 문의해 주세요';
   }else{
     document.getElementById('pprevAmt').textContent=total.toLocaleString()+'원';
-    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 평일 ${wd}박 + 주말 ${we}박`+(detail?` + ${detail}`:'')+` · 단기 임대 시 관리비·청소비·보증금 별도 · 연휴·연말·해돋이 기간은 별도 문의`;
+    document.getElementById('pprevLbl').textContent=`${nights}박 ${nights+1}일 · 평일 ${wd}박 + 주말 ${we}박`+(detail?` + ${detail}`:'')+` · 단기 임대 시 관리비·청소비·보증금 별도 · 크리스마스·해맞이·연휴 기간은 별도 문의`;
   }
   document.getElementById('pprev').classList.add('on');
 }
